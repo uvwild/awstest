@@ -1,0 +1,54 @@
+info:
+  component: Config Server
+spring:
+  main:
+    banner_mode: off
+  profiles:
+    active: local
+  application:
+    name: configserver
+  jmx:
+    default_domain: cloud.config.server
+---
+
+spring:
+  profiles: local
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/spring-cloud-samples/config-repo
+#          basedir: /c:/Users/uv/config-repo
+#          uri: file://c:/Users/uv/config-repo
+          repos:
+            local:
+              pattern: local*
+              uri: file://c:/Users/uv/config-repo
+
+server:
+  port: 8888
+management:
+  context_path: /admin
+
+---
+spring:
+  profiles: default
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/spring-cloud-samples/config-repo
+#          basedir: /c:/Users/uv/config-repo
+#          uri: file://c:/Users/uv/config-repo
+          repos:
+            local:
+# The pattern format is a comma-separated list of {application}/{profile} names with wildcards (where a pattern beginning with a wildcard may need to be quoted)
+              pattern: local
+# Spring Cloud Config Server supports a git repository URL with placeholders for the {application} and {profile} (and {label}
+              uri: file://c:/Users/uv/config-repo
+
+server:
+  port: 8888
+management:
+  context_path: /admin
+

@@ -1,0 +1,9 @@
+cloud.aws.credentials.accessKey:  AKIAJS4OSXPXYXZ67Z5Q
+cloud.aws.credentials.secretKey:  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
+cloud.aws.region.auto:            false
+cloud.aws.region.static:          eu-central-1
+
+local.server.port:                8989
+
+
+spring.cloud.config.server.prefix: /config
