@@ -4,15 +4,17 @@ spring:
   main:
     banner_mode: off
   profiles:
-    active: local
+# this uses the adefault profile when not specified  it is redundant to @ActiveProfile("local")
+#    active: local
   application:
     name: configserver
   jmx:
     default_domain: cloud.config.server
+
 ---
 
 spring:
-  profiles: local
+  profiles: extra
   cloud:
     config:
       server:
@@ -22,15 +24,19 @@ spring:
 #          uri: file://c:/Users/uv/config-repo
           repos:
             local:
-              pattern: local*
-              uri: file://c:/Users/uv/config-repo
+# The pattern format is a comma-separated list of {application}/{profile} names with wildcards (where a pattern beginning with a wildcard may need to be quoted)
+              pattern: local
+# Spring Cloud Config Server supports a git repository URL with placeholders for the {application} and {profile} (and {label}
+              uri: https://github.com/spring-cloud-samples/config-repo
 
 server:
-  port: 8888
+  port: 7777
 management:
-  context_path: /admin
+  context-path: /admin
+dummy: dummyExtra
 
 ---
+
 spring:
   profiles: default
   cloud:
@@ -45,10 +51,34 @@ spring:
 # The pattern format is a comma-separated list of {application}/{profile} names with wildcards (where a pattern beginning with a wildcard may need to be quoted)
               pattern: local
 # Spring Cloud Config Server supports a git repository URL with placeholders for the {application} and {profile} (and {label}
-              uri: file://c:/Users/uv/config-repo
+              uri: https://github.com/spring-cloud-samples/config-repo
 
 server:
   port: 8888
 management:
-  context_path: /admin
+  context-path: /admin
+dummy: dummyDefault
+
+---
+
+spring:
+  profiles: local
+  cloud:
+    config:
+      server:
+        git:
+#          uri: https://github.com/spring-cloud-samples/config-repo
+#          basedir: /c:/Users/uv/config-repo
+          uri: file:///c:/Users/uv/config-repo
+          repos:
+            local:
+              pattern: local*
+              uri: file:///c:/Users/uv/config-repo
+
+server:
+  port: 9999
+management:
+# seemingly the separator is flexible -_ or camelcase
+  context-path: /adm
+dummy: dummyLocal
 
