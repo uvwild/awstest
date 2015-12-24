@@ -11,5 +11,7 @@
     <modules>
         <module>dataservice</module>
         <module>configserver</module>
+        <module>parent</module>
     </modules>
+
 </project>

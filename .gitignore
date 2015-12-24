@@ -1,3 +1,4 @@
+/configserver/configserver.iml
 ### Java template
 *.class
 
@@ -15,3 +16,4 @@ hs_err_pid*
 # Created by .ignore support plugin (hsz.mobi)
 /.idea
 /configserver/target
+/parent/parent.iml
