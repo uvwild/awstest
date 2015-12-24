@@ -2,18 +2,18 @@ package org.funtime.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.funtime.AwstestApplicationTests;
+import org.funtime.config.StaticData;
+import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -26,15 +26,30 @@ import java.util.Map;
 @SpringApplicationConfiguration(classes = AwstestApplicationTests.class)
 // Makes sure the application starts at a random free port, caches it throughout all unit tests, and closes it again at the end.
 @IntegrationTest("server.port:0")
-@WebAppConfiguration
-@Configuration
-@ComponentScan
-@EnableAutoConfiguration
-public abstract class AbstractIntegrationTest {
+@WebAppConfiguration            // important to configure the rest service port correctly
+@ComponentScan                // TODO check required annotations
+//@EnableAutoConfiguration
+public abstract class AbstractIntegrationTest extends StaticData {
+
+    @Autowired
+    ObjectMapper objectMapper;      // my custom Mapper is injected
+
+    final TestRestTemplate restTemplate = new TestRestTemplate();
 
     // Will contain the random free port number
     @Value("${local.server.port}")
     private int port;
+
+
+    @Before
+    public void setupTestObjectMapper() {
+        for (HttpMessageConverter<?> converter : restTemplate.getMessageConverters()) {
+            if (converter instanceof MappingJackson2HttpMessageConverter) {
+                MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = (MappingJackson2HttpMessageConverter) converter;
+                jackson2HttpMessageConverter.setObjectMapper(objectMapper);
+            }
+        }
+    }
 
     /**
      * Returns the base url for your rest interface
@@ -48,17 +63,13 @@ public abstract class AbstractIntegrationTest {
     // Some convenience methods to help you interact with your rest interface
 
     /**
-     * @param requestMappingUrl             should be exactly the same as defined in your RequestMapping
-     *                                      value attribute (including the parameters in {})
+     * @param requestMappingUrl             should be exactly the same as defined in your RequestMapping value attribute (including the parameters in {})
      *                                      RequestMapping(value = yourRestUrl)
      * @param serviceReturnTypeClass        should be the the return type of the service
-     * @param parametersInOrderOfAppearance should be the parameters of the requestMappingUrl ({}) in
-     *                                      order of appearance
+     * @param parametersInOrderOfAppearance should be the parameters of the requestMappingUrl ({}) in order of appearance
      * @return the result of the service, or null on error
      */
     protected <T> T getEntity(final String requestMappingUrl, final Class<T> serviceReturnTypeClass, final Object... parametersInOrderOfAppearance) {
-        // Make a rest template do do the service call
-        final TestRestTemplate restTemplate = new TestRestTemplate();
         // Add correct headers, none for this example
         final HttpEntity<String> requestEntity = new HttpEntity<String>(new HttpHeaders());
         try {
@@ -74,18 +85,13 @@ public abstract class AbstractIntegrationTest {
     }
 
     /**
-     * @param requestMappingUrl             should be exactly the same as defined in your RequestMapping
-     *                                      value attribute (including the parameters in {})
+     * @param requestMappingUrl             should be exactly the same as defined in your RequestMapping value attribute (including the parameters in {})
      *                                      RequestMapping(value = yourRestUrl)
-     * @param serviceListReturnTypeClass    should be the the generic type of the list the service
-     *                                      returns, eg: List<serviceListReturnTypeClass>
-     * @param parametersInOrderOfAppearance should be the parameters of the requestMappingUrl ({}) in
-     *                                      order of appearance
+     * @param serviceListReturnTypeClass    should be the the generic type of the list the service returns, eg: List<serviceListReturnTypeClass>
+     * @param parametersInOrderOfAppearance should be the parameters of the requestMappingUrl ({}) in order of appearance
      * @return the result of the service, or null on error
      */
     protected <T> List<T> getList(final String requestMappingUrl, final Class<T> serviceListReturnTypeClass, final Object... parametersInOrderOfAppearance) {
-        final ObjectMapper mapper = new ObjectMapper();
-        final TestRestTemplate restTemplate = new TestRestTemplate();
         final HttpEntity<String> requestEntity = new HttpEntity<String>(new HttpHeaders());
         try {
             // Retrieve list
@@ -94,7 +100,7 @@ public abstract class AbstractIntegrationTest {
             final List<T> returnList = new ArrayList<T>();
             for (final Map<String, String> entry : entries) {
                 // Fill return list with converted objects
-                returnList.add(mapper.convertValue(entry, serviceListReturnTypeClass));
+                returnList.add(objectMapper.convertValue(entry, serviceListReturnTypeClass));
             }
             return returnList;
         } catch (final Exception ex) {
@@ -104,20 +110,21 @@ public abstract class AbstractIntegrationTest {
     }
 
     /**
-     * @param requestMappingUrl      should be exactly the same as defined in your RequestMapping
-     *                               value attribute (including the parameters in {})
+     * @param requestMappingUrl      should be exactly the same as defined in your RequestMapping value attribute (including the parameters in {})
      *                               RequestMapping(value = yourRestUrl)
      * @param serviceReturnTypeClass should be the the return type of the service
      * @param objectToPost           Object that will be posted to the url
      * @return
      */
-    protected <T> T postEntity(final String requestMappingUrl, final Class<T> serviceReturnTypeClass, final Object objectToPost) {
+    protected <T> ResponseEntity<T> postEntity(final String requestMappingUrl, final Class<T> serviceReturnTypeClass, final Object objectToPost) {
         final TestRestTemplate restTemplate = new TestRestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
         final ObjectMapper mapper = new ObjectMapper();
         try {
-            final HttpEntity<String> requestEntity = new HttpEntity<String>(mapper.writeValueAsString(objectToPost));
+            final HttpEntity<String> requestEntity = new HttpEntity<String>(mapper.writeValueAsString(objectToPost), headers);
             final ResponseEntity<T> entity = restTemplate.postForEntity(getBaseUrl() + requestMappingUrl, requestEntity, serviceReturnTypeClass);
-            return entity.getBody();
+            return entity;
         } catch (final Exception ex) {
             ex.printStackTrace();
         }

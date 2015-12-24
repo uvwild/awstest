@@ -1,5 +1,6 @@
 package org.funtime.services;
 
+import org.funtime.data.LatLngValueMap;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -19,23 +20,19 @@ public class SimpleAccelerometerPersistenceServiceImpl implements AccelerometerP
         return storage;
     }
     @Override
-    public boolean put(long when, HashMap data) {
-        boolean exists = has(when);
+    public boolean put(long when, LatLngValueMap data) {
+//        boolean exists = has(when);
         getInstance().put(when, data);
-        return exists;
+        return has(when);
     }
 
     @Override
     public boolean has(long when) {
-        if (getInstance().containsKey(when)) {
-            return true;
-        } else {
-            return false;
-        }
+        return getInstance().containsKey(when);
     }
 
     @Override
-    public HashMap get(long when) {
-        return (HashMap) getInstance().get(when);
+    public LatLngValueMap get(long when) {
+        return (LatLngValueMap) getInstance().get(when);
     }
 }
