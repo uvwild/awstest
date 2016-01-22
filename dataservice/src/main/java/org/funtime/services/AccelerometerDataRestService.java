@@ -32,7 +32,6 @@ public class AccelerometerDataRestService {
     public ResponseEntity<?> putDataset(@PathVariable long when, @RequestBody LatLngValueMap data, HttpServletRequest request) throws URISyntaxException {
         String path = request.getRequestURL().toString();
 
-
         if (when > 0 && data != null) {
             boolean written = accelerometerPersistenceService.put(when, data);
             return written?ResponseEntity.created(new URI(path)).build():ResponseEntity.status(406).build();

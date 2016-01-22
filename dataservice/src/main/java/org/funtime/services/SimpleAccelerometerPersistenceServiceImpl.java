@@ -16,6 +16,8 @@ public class SimpleAccelerometerPersistenceServiceImpl implements AccelerometerP
     static HashMap getInstance() {
         if (storage == null) {
             storage = new HashMap();
+            // put default element!
+            storage.put(0, LatLngValueMap.defaultMap);
         }
         return storage;
     }

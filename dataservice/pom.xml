@@ -6,7 +6,7 @@
     <groupId>org.funtime</groupId>
     <artifactId>dataservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>dataservice</name>
     <description>DataService Module for Spring Boot using AWS backend</description>
@@ -79,6 +79,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--also deployable to container as war -->
+        <!--http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <!--<dependency>-->
         <!--<groupId>org.springframework.boot</groupId>-->
         <!--<artifactId>spring-boot-starter-websocket</artifactId>-->
@@ -137,6 +144,7 @@
 
 
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -146,6 +154,25 @@
                 <groupId>org.cloudfoundry</groupId>
                 <artifactId>cf-maven-plugin</artifactId>
                 <version>1.1.3</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <!-- this is relative to the pom.xml directory -->
+                            <!--add elasticbean stuff-->
+                            <directory>elasticbeanstalk</directory>
+                        </resource>
+                        <resource>
+                            <!--add jsp files from webapp-->
+                            <directory>src/main/webapp</directory>
+                        </resource>
+                    </webResources>
+                </configuration>
             </plugin>
 
             <!-- run integration tests -->

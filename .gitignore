@@ -1,4 +1,3 @@
-/configserver/configserver.iml
 ### Java template
 *.class
 
@@ -16,4 +15,18 @@ hs_err_pid*
 # Created by .ignore support plugin (hsz.mobi)
 /.idea
 /configserver/target
+/dataservice/target
+
+/configserver/configserver.iml
+/dataservice/dataservice.iml
 /parent/parent.iml
+
+
+# Elastic Beanstalk Files
+
+.elasticbeanstalk/*
+
+!.elasticbeanstalk/*.cfg.yml
+
+!.elasticbeanstalk/*.global.yml
+
