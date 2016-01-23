@@ -1,0 +1,13 @@
+branch-defaults:
+  master:
+    environment: my-env
+    group_suffix: null
+deploy:
+  artifact: ROOT.war
+global:
+  application_name: PartyApp Elastic Beanstalk Application on Tomcat
+  default_ec2_keyname: first_ec2_keys
+  default_platform: 64bit Amazon Linux 2015.09 v2.0.4 running Java 8
+  default_region: eu-central-1
+  profile: eb-cli
+  sc: git

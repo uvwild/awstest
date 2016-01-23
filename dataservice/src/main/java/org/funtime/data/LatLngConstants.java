@@ -7,4 +7,5 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public interface LatLngConstants {
     LatLng FusionFestival = new LatLng(53.310910, 12.739023);
+    LatLngValueMap defaultMap = LatLngValueMap.defaultMap;
 }

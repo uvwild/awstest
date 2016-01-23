@@ -95,6 +95,19 @@
         <!--<artifactId>spring-boot-starter-ws</artifactId>-->
         <!--</dependency>-->
 
+        <!-- JSP JSTL includes -->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.taglibs</groupId>-->
+            <!--<artifactId>taglibs-standard-spec</artifactId>-->
+            <!--<version>1.2.1</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.taglibs</groupId>-->
+            <!--<artifactId>taglibs-standard-impl</artifactId>-->
+            <!--<version>1.2.1</version>-->
+        <!--</dependency>-->
+
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -201,6 +214,7 @@
                         <phase>integration-test</phase>
                         <configuration>
                             <reuseForks>false</reuseForks>
+                            <forkCount>1</forkCount>
                             <excludes>
                                 <exclude>none</exclude>
                             </excludes>

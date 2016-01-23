@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 
 /**
  * Created by uv on 08/12/2015 for awstest
@@ -21,6 +22,12 @@ public class AccelerometerDataRestService {
 
     @Autowired
     AccelerometerPersistenceService accelerometerPersistenceService;
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity<?> getAll() {
+        HashMap<Long,LatLngValueMap> result = accelerometerPersistenceService.getAll();
+        return (result != null) ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
+    }
 
     @RequestMapping(value = "/{when}", method = RequestMethod.GET)
     public ResponseEntity<?> getDataset(@PathVariable long when) {
