@@ -7,6 +7,9 @@ import java.util.Map;
  * Created by uv on 23/12/2015 for awstest
  */
 public class TimedLatLngValueMap extends HashMap<Long,LatLngValueMap> {
+    public TimedLatLngValueMap(long date, LatLngValueMap latLngValueMap) {
+    }
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof TimedLatLngValueMap))

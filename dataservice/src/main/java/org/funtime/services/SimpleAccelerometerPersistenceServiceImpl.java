@@ -1,9 +1,8 @@
 package org.funtime.services;
 
 import org.funtime.data.LatLngValueMap;
+import org.funtime.data.TimedLatLngValueMap;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 
 /**
  * Created by uv on 08/12/2015 for awstest
@@ -11,21 +10,20 @@ import java.util.HashMap;
 @Service
 public class SimpleAccelerometerPersistenceServiceImpl implements AccelerometerPersistenceService {
 
-    private static HashMap<Long,LatLngValueMap> storage;
+    private static TimedLatLngValueMap storage;
 
-    static HashMap<Long,LatLngValueMap> getInstance() {
+    static TimedLatLngValueMap getInstance() {
         if (storage == null) {
-            storage = new HashMap();
-            // put default element!
-            storage.put(0l, LatLngValueMap.defaultMap);
+            // put default element in CTOR
+            storage = new TimedLatLngValueMap(0l, LatLngValueMap.defaultMap);
         }
         return storage;
     }
     @Override
     public boolean put(long when, LatLngValueMap data) {
-//        boolean existed = has(when);
+        boolean existed = has(when);
         getInstance().put(when, data);
-        return has(when); // existed;
+        return existed;
     }
 
     @Override
@@ -39,7 +37,13 @@ public class SimpleAccelerometerPersistenceServiceImpl implements AccelerometerP
     }
 
     @Override
-    public HashMap<Long, LatLngValueMap> getAll() {
+    public TimedLatLngValueMap getMapping(long date) {
+        LatLngValueMap latLngValueMap = get(date);
+        return (latLngValueMap!=null)?new TimedLatLngValueMap(date,latLngValueMap):null;
+    }
+
+    @Override
+    public TimedLatLngValueMap getAll() {
         return getInstance();
     }
 }

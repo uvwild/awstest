@@ -92,7 +92,7 @@
             bottom: 0px;
             left: 50%;
 
-            background-color: #c7c7c7;
+            background-color: #c79cb2;
         }
 
         h1 {
@@ -130,8 +130,8 @@
     <ul>
         <li><a href="./dataset/0">Get Dataset timestamp 0</a></li>
         <li><a href="./dataset/1">Get Dataset timestamp 1</a></li>
-        <li><form method="post" action="./dataset/1"><input type="submit" value="Post Dataset timestamp 1"/></form> </li>
-        <li><a href="./dataset/2">Get Dataset timestamp 2</a></li>
+        <li><a href="./createNext">Set Dataset timestamp</a></li>
+        <li><a href="./getLast">Get Latest Dataset timestamp</a></li>
         <li><a href="./dataset/${today.time}">Get Dataset timestamp "${today.time}"</a></li>
         <li><a href="./dataset/">Get All Datasets</a></li>
         <li><a href="./home">Home</a></li>

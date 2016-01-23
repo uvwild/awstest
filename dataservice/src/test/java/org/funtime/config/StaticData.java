@@ -25,8 +25,6 @@ public class StaticData {
     static {
         latLngValueTestMap = new LatLngValueMap();
         latLngValueTestMap.put(testCoord, testMeasurements);
-        timedLatLngValueTestMap = new TimedLatLngValueMap();
-        timedLatLngValueTestMap.put(testdate, latLngValueTestMap);
+        timedLatLngValueTestMap = new TimedLatLngValueMap(testdate, latLngValueTestMap);
     }
-
 }

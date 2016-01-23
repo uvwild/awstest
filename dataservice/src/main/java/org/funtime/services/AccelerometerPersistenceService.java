@@ -1,8 +1,7 @@
 package org.funtime.services;
 
 import org.funtime.data.LatLngValueMap;
-
-import java.util.HashMap;
+import org.funtime.data.TimedLatLngValueMap;
 
 /**
  * Created by uv on 08/12/2015 for awstest
@@ -12,5 +11,6 @@ public interface AccelerometerPersistenceService {
     boolean put(long date, LatLngValueMap data);
     boolean has(long date);
     LatLngValueMap get (long date);
-    HashMap<Long, LatLngValueMap> getAll();
+    TimedLatLngValueMap getMapping (long date);
+    TimedLatLngValueMap getAll();
 }

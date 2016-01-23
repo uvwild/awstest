@@ -1,6 +1,7 @@
 package org.funtime.services;
 
 import org.funtime.data.LatLngValueMap;
+import org.funtime.data.TimedLatLngValueMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,10 +41,19 @@ public class AccelerometerDataRestService {
         String path = request.getRequestURL().toString();
 
         if (when > 0 && data != null) {
-            boolean written = accelerometerPersistenceService.put(when, data);
-            return written?ResponseEntity.created(new URI(path)).build():ResponseEntity.status(406).build();
+            boolean existed = accelerometerPersistenceService.put(when, data);
+            return existed?ResponseEntity.created(new URI(path)).build():ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    public TimedLatLngValueMap getRecord (long date) {
+        LatLngValueMap latLngValueMap = accelerometerPersistenceService.get(date);
+        return new TimedLatLngValueMap(date, latLngValueMap);
+    }
+    public boolean put(TimedLatLngValueMap data){
+        return false;
+    }
+
 }
