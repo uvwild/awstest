@@ -8,6 +8,7 @@ import java.util.Map;
  */
 public class TimedLatLngValueMap extends HashMap<Long,LatLngValueMap> {
     public TimedLatLngValueMap(long date, LatLngValueMap latLngValueMap) {
+
     }
 
     @Override

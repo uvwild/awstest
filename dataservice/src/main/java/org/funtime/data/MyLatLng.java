@@ -6,6 +6,7 @@
 //
 ///**
 // * Created by uv on 23/12/2015 for awstest
+// * extra pojo class for json mapping or transfer
 // */
 //@RequiredArgsConstructor
 //@Getter

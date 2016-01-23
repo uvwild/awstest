@@ -4,13 +4,14 @@ import org.funtime.data.LatLngValueMap;
 import org.funtime.data.TimedLatLngValueMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Created by uv on 23.01.2016 for awstest
@@ -35,20 +36,21 @@ public class TestController {
     public ResponseEntity<?> getLastDataset() {
         TimedLatLngValueMap result = accelerometerPersistenceService.getAll();
         Long when = Collections.max(result.keySet());
-        return ResponseEntity.ok(result.get(when));
+        return ResponseEntity.ok(accelerometerPersistenceService.getMapping(when));
     }
 
-    @RequestMapping(value = "/delay", method = RequestMethod.GET)
-    public ResponseEntity<?> delay(@RequestParam(required = false) Long delayMilliSeconds) {
-        if (delayMilliSeconds == null) {
-            delayMilliSeconds = defaultDelayMillis;
+    @RequestMapping(value = {"/delay", "/delay/{delayms}"}, method = RequestMethod.GET)
+    public ResponseEntity<?> delay(@PathVariable Optional<Long> delayms) {
+        long delayMilliSeconds = defaultDelayMillis;
+        if (delayms == null || !delayms.isPresent() ) {
+            delayMilliSeconds = delayms.get();
         }
         try {
             Thread.sleep(delayMilliSeconds);
         } catch (InterruptedException e) {
             // nothing to do really
         }
-        return ResponseEntity.ok(String.format("delay: $d", delayMilliSeconds));
+        return ResponseEntity.ok(String.format("delay: %dms", delayms));
     }
 
 }

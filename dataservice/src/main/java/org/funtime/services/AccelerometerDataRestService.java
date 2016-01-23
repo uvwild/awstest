@@ -24,7 +24,7 @@ public class AccelerometerDataRestService {
     @Autowired
     AccelerometerPersistenceService accelerometerPersistenceService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = { "" , "/"}, method = RequestMethod.GET)
     public ResponseEntity<?> getAll() {
         HashMap<Long,LatLngValueMap> result = accelerometerPersistenceService.getAll();
         return (result != null) ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
