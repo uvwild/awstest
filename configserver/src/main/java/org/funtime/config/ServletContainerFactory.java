@@ -14,8 +14,8 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class ServletContainerFactory  {
 
-    // from @IntegrationTest above -- Will contain the random free port number
-    @Value("${local.server.port}")
+    // NOT from @IntegrationTest above -- Will contain the random free port number
+    @Value("${server.port}")
     private int port;
 
     @Bean

@@ -1,7 +1,6 @@
 package org.funtime.services;
 
 import org.funtime.data.LatLngValueMap;
-import org.funtime.data.TimedLatLngValueMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,12 +48,12 @@ public class AccelerometerDataRestService {
         }
     }
 
-    public TimedLatLngValueMap getRecord (long date) {
-        LatLngValueMap latLngValueMap = accelerometerPersistenceService.get(date);
-        return new TimedLatLngValueMap(date, latLngValueMap);
-    }
-    public boolean put(TimedLatLngValueMap data){
-        return false;
-    }
+//    public TimedLatLngValueMap getRecord (long date) {
+//        LatLngValueMap latLngValueMap = accelerometerPersistenceService.get(date);
+//        return new TimedLatLngValueMap(date, latLngValueMap);
+//    }
+//    public boolean putRecord(TimedLatLngValueMap data){
+//        return false;
+//    }
 
 }

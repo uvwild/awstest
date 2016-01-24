@@ -12,7 +12,7 @@ import java.util.Date;
  * this URL can be configured for AWS elastic load balancer
  */
 @RestController
-public class HealthCheckController {
+public class StatusController {
 
     @RequestMapping(value = "/health", method = RequestMethod.GET)
     public ResponseEntity<String> checkHealth() {

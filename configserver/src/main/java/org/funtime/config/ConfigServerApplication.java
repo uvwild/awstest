@@ -2,6 +2,7 @@ package org.funtime.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.cloud.config.server.EnableConfigServer;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -15,10 +16,10 @@ import java.util.Set;
 @ComponentScan
 @EnableAutoConfiguration
 @EnableConfigServer
-public class ConfigServerApplication //extends SpringBootServletInitializer
+public class ConfigServerApplication extends SpringBootServletInitializer
 {
 
-//    @Override
+    @Override
     protected SpringApplicationBuilder configure (SpringApplicationBuilder builder){
         return builder.sources(ConfigServerApplication.class, BootstrapProperties.class, StatusController.class);
     }
