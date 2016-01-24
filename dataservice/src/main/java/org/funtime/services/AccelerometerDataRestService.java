@@ -42,7 +42,8 @@ public class AccelerometerDataRestService {
 
         if (when > 0 && data != null) {
             boolean existed = accelerometerPersistenceService.put(when, data);
-            return existed?ResponseEntity.created(new URI(path)).build():ResponseEntity.ok().build();
+            return ResponseEntity.created(new URI(path)).build();
+//            return existed?ResponseEntity.created(new URI(path)).build():ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
         }

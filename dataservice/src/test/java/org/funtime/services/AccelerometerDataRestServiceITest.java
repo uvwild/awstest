@@ -1,6 +1,7 @@
 package org.funtime.services;
 
-import org.funtime.AwstestApplicationTests;
+import org.funtime.DataserviceApplication;
+import org.funtime.data.LatLngConstants;
 import org.funtime.data.LatLngValueMap;
 import org.junit.Test;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -8,32 +9,42 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertSame;
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created by uv on 08/12/2015 for awstest
+ * we need to reference the rest service applicationso the services start properly
  */
-@SpringApplicationConfiguration(classes = AwstestApplicationTests.class)
-public class AccelerometerDataRestServiceITest extends AbstractIntegrationTest {
+@SpringApplicationConfiguration(classes = DataserviceApplication.class)
+public class AccelerometerDataRestServiceITest extends org.funtime.testing.AbstractIntegrationTest {
 
     AccelerometerDataRestService accelerometerDataRestService;
     AccelerometerPersistenceService accelerometerPersistenceService;
 
-    static String restServiceUrl = String.format("%s/%d", AccelerometerDataRestService.entryPoint, testdate);
+    static String restServicePathTestDate = String.format("%s/%d", AccelerometerDataRestService.entryPoint, testdate);
+    static String restServicePathDefault = String.format("%s/%d", AccelerometerDataRestService.entryPoint, 0);
+
+    @Test
+    public void testGetDatasetZero() throws Exception {
+        LatLngValueMap resultMap = getEntity(restServicePathDefault, LatLngValueMap.class);
+        assertNotNull(resultMap);
+        assertEquals(LatLngConstants.defaultMap, resultMap);
+    }
 
     @Test
     public void testGetDataset() throws Exception {
-        LatLngValueMap resultMap = getEntity(restServiceUrl, LatLngValueMap.class);
+        ResponseEntity<Void> responseEntity = postEntity(restServicePathTestDate, Void.class, latLngValueTestMap);
+        LatLngValueMap resultMap = getEntity(restServicePathTestDate, LatLngValueMap.class);
         assertNotNull(resultMap);
         assertEquals(latLngValueTestMap, resultMap);
     }
 
     @Test
     public void testPutDataset() throws Exception {
-        ResponseEntity<Void> responseEntity = postEntity(restServiceUrl, Void.class, latLngValueTestMap);
+        ResponseEntity<Void> responseEntity = postEntity(restServicePathTestDate, Void.class, latLngValueTestMap);
         assertNotNull(responseEntity);
-        assertTrue(responseEntity.getStatusCode().equals(HttpStatus.CREATED));
+        assertSame(responseEntity.getStatusCode(),HttpStatus.CREATED);
     }
 
 //    @Test

@@ -9,9 +9,12 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>parent</module>
+        <module>common-data</module>
+        <module>testing-base</module>
+
         <module>dataservice</module>
         <module>configserver</module>
-        <module>parent</module>
     </modules>
 
 </project>

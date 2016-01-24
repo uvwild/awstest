@@ -7,8 +7,14 @@ import java.util.Map;
  * Created by uv on 23/12/2015 for awstest
  */
 public class TimedLatLngValueMap extends HashMap<Long,LatLngValueMap> {
-    public TimedLatLngValueMap(long date, LatLngValueMap latLngValueMap) {
 
+    public TimedLatLngValueMap() {
+        super();
+    }
+
+    public TimedLatLngValueMap(long date, LatLngValueMap latLngValueMap) {
+        super();
+        this.put(date,latLngValueMap);
     }
 
     @Override

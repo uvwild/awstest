@@ -1,4 +1,4 @@
-package org.funtime;
+package org.funtime.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -30,4 +30,5 @@ public class CustomObjectMapper extends ObjectMapper {
 
         this.registerModule(mod);    // Register the module on the mapper
     }
+
 }

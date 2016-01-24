@@ -1,11 +1,10 @@
-package org.funtime;
+package org.funtime.testing;
 
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootApplication
-public class AwstestApplicationTests {
+public class IntegrationTestApplication {
 
 	@Test
 	public void contextLoads() {

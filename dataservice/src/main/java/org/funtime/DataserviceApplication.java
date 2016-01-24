@@ -5,16 +5,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 
+/**
+ * extend from servlet initializer so this runs also on a tomcat (cloud)
+ */
 @SpringBootApplication
-public class AwstestApplication extends SpringBootServletInitializer {
+public class DataserviceApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(AwstestApplication.class);
+        return application.sources(DataserviceApplication.class);
     }
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(AwstestApplication.class, args);
+        SpringApplication.run(DataserviceApplication.class, args);
     }
 
 }

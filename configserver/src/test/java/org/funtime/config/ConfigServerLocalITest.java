@@ -1,11 +1,15 @@
 package org.funtime.config;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.StringUtils;
 
@@ -23,7 +27,7 @@ import static junit.framework.TestCase.assertTrue;
 @ActiveProfiles("local") // with this the local profile is used for @Value
 @Configuration
 @EnableConfigurationProperties
-public class ConfigServerLocalITest extends AbstractIntegrationTest {
+public class ConfigServerLocalITest extends AbstractConfigServerIntegrationTest {
 
     @Value("${dummy}")
     String dummy;
@@ -46,6 +50,18 @@ public class ConfigServerLocalITest extends AbstractIntegrationTest {
 //    @Value("${local.server.contextPath}")
 //    private String contextPath;
 
+
+    @Before
+    // a complicated way to access the bootstrap.yml file
+    // TODO However, this is using the local profile for no understood reason!!!
+    public void readBootstrapYaml() {
+        PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+        YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
+        yaml.setResources(new ClassPathResource("bootstrap.yml"));
+        propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
+        propertySourcesPlaceholderConfigurer.postProcessBeanFactory(beanFactory);
+        properties = propertySourcesPlaceholderConfigurer.getAppliedPropertySources().get(PropertySourcesPlaceholderConfigurer.LOCAL_PROPERTIES_PROPERTY_SOURCE_NAME);
+    }
 
     @Autowired
     private ConfigurableListableBeanFactory beanFactory;

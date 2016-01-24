@@ -1,7 +1,7 @@
 package org.funtime.services;
 
-import org.funtime.AwstestApplicationTests;
-import org.funtime.config.StaticData;
+import org.funtime.data.StaticData;
+import org.funtime.testing.IntegrationTestApplication;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 /**
  * Created by uv on 08/12/2015 for awstest
  */
-@SpringApplicationConfiguration(classes = AwstestApplicationTests.class)
+@SpringApplicationConfiguration(classes = IntegrationTestApplication.class)
 public class AccelerometerDataRestServiceTest extends StaticData {
 
     AccelerometerDataRestService accelerometerDataRestService;

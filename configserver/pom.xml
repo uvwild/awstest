@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -9,7 +10,7 @@
     <packaging>war</packaging>
 
     <name>configserver</name>
-    <description>Config Server for Spring Boot</description>
+    <description>ConfigServer Module deployed to AWS beanstalk</description>
 
     <parent>
         <!--<groupId>org.funtime</groupId>-->
@@ -35,9 +36,54 @@
     <!--</dependencyManagement>-->
 
     <dependencies>
+
+        <!-- separate dep required due to test scope in testing-base -->
+        <dependency>
+            <groupId>org.funtime</groupId>
+            <artifactId>common-data</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.funtime</groupId>
+            <artifactId>testing-base</artifactId>
+            <type>test-jar</type>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
+        </dependency>
+
+        <!--also deployable to container as war -->
+        <!--http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--also deployable to container as war -->
+        <!--http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-configuration-processor</artifactId>-->
+        <!--<optional>true</optional>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.6</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -52,36 +98,59 @@
             <optional>true</optional>
         </dependency>
 
-        <!--also deployable to container as war -->
-        <!--http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
 
+        <!--TEST SCOPE #####################-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <!--<scope>test</scope>-->
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.6</version>
-            <scope>provided</scope>
-        </dependency>
 
     </dependencies>
 
+    <scm>
+        <connection>scm:git:http://127.0.0.1/dummy</connection>
+        <developerConnection>scm:git:https://127.0.0.1/dummy</developerConnection>
+        <tag>HEAD</tag>
+        <url>http://127.0.0.1/dummy</url>
+    </scm>
+
     <build>
+        <finalName>dataservice-${buildNumber.timestamp}</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <buildNumberPropertyName>buildNumber.value</buildNumberPropertyName>
+                    <timestampPropertyName>buildNumber.timestamp</timestampPropertyName>
+                    <format>{0,date,yyyyMMdd-HHmm}</format>
+                    <items>
+                        <item>timestamp</item>
+                    </items>
+                    <revisionOnScmFailure>unknownbuild</revisionOnScmFailure>
+                    <!--<doCheck>true</doCheck>-->
+                    <doUpdate>false</doUpdate>
+                </configuration>
+            </plugin>
+
+            <!--#########################################################################################-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
+            <!--#########################################################################################-->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -90,11 +159,21 @@
                 </configuration>
             </plugin>
 
+            <!--#########################################################################################-->
+            <!-- PACKAGE WAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Implementation-Build>$\{buildNumber}</Implementation-Build>
+                        </manifestEntries>
+                    </archive>
                     <webResources>
                         <resource>
                             <!-- this is relative to the pom.xml directory -->
@@ -109,7 +188,8 @@
                 </configuration>
             </plugin>
 
-            <!-- run integration tests -->
+            <!--#########################################################################################-->
+            <!-- INTEGRATION TESTS -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -135,6 +215,7 @@
                         <phase>integration-test</phase>
                         <configuration>
                             <reuseForks>false</reuseForks>
+                            <forkCount>4</forkCount>
                             <excludes>
                                 <exclude>none</exclude>
                             </excludes>

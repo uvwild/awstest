@@ -59,7 +59,7 @@
         }
 
         a {
-            color: #0188cc;
+            color: #1827cc;
         }
 
         .textColumn, .linksColumn {
@@ -113,7 +113,7 @@
         }
 
         li {
-            margin: 1em 0em;
+            margin: 4px 0em;
         }
 
     </style>
@@ -130,11 +130,18 @@
     <ul>
         <li><a href="./dataset/0">Get Dataset timestamp 0</a></li>
         <li><a href="./dataset/1">Get Dataset timestamp 1</a></li>
-        <li><a href="./createNext">Set Dataset timestamp</a></li>
-        <li><a href="./getLast">Get Latest Dataset timestamp</a></li>
+        <li><a href="./getLast">Get Dataset timestamp Latest </a></li>
         <li><a href="./dataset/${today.time}">Get Dataset timestamp "${today.time}"</a></li>
-        <li><a href="./dataset/">Get All Datasets</a></li>
+        <li/>
+        <li><a href="./createNext">Set Dataset timestamp</a></li>
+        <li/>
+        <li><a href="./dataset">Get All Datasets</a></li>
+        <li/>
         <li><a href="./home">Home</a></li>
+        <li/>
+        <li><a href="./delay">Delay</a></li>
+        <li><a href="./delay/1234">Delay 1234</a></li>
+        <li/>
         <li><a href="./health">Health</a></li>
     </ul>
 </div>

@@ -42,15 +42,16 @@ public class TestController {
     @RequestMapping(value = {"/delay", "/delay/{delayms}"}, method = RequestMethod.GET)
     public ResponseEntity<?> delay(@PathVariable Optional<Long> delayms) {
         long delayMilliSeconds = defaultDelayMillis;
-        if (delayms == null || !delayms.isPresent() ) {
+        if (delayms == null || !delayms.isPresent())
+            delayMilliSeconds = defaultDelayMillis;
+        else
             delayMilliSeconds = delayms.get();
-        }
         try {
             Thread.sleep(delayMilliSeconds);
         } catch (InterruptedException e) {
             // nothing to do really
         }
-        return ResponseEntity.ok(String.format("delay: %dms", delayms));
+        return ResponseEntity.ok(String.format("delay: %dms", delayMilliSeconds));
     }
 
 }
