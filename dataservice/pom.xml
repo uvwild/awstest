@@ -22,6 +22,12 @@
     <name>dataservice</name>
     <description>DataService Module for Spring Boot deployed to AWS beanstalk</description>
 
+    <properties>
+        <tomcat.port>8080</tomcat.port>
+        <!--<catalina.home>${env.CATALINA_HOME}</catalina.home>-->
+        <catalina.home>C:\Program Files\Apache Software Foundation\Tomcat 8.0</catalina.home>
+    </properties>
+
 
     <dependencies>
 
@@ -164,7 +170,7 @@
     </scm>
 
     <build>
-        <finalName>dataservice-${buildNumber.timestamp}</finalName>
+        <!--<finalName>dataservice-${buildNumber.timestamp}</finalName>-->
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -280,6 +286,40 @@
                     </execution>
                 </executions>
             </plugin>
+
+
+            <!--#########################################################################################-->
+            <!--simple war deploy to local tomcat using artifactId as webcontext on port 8080 -->
+            <!--    mvn -Ptomcat cargo:deploy -->
+            <!--    mvn -Ptomcat cargo:run-->
+            <!--    mvn -Ptomcat cargo:stop-->
+
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.4.8</version>
+                <configuration>
+                    <container>
+                        <containerId>tomcat8x</containerId>
+                        <home>${catalina.home}</home>
+                    </container>
+                    <configuration>
+                        <type>existing</type>
+                        <home>${catalina.home}</home>
+                    </configuration>
+                    <deployables>
+                        <deployable>
+                            <properties>
+                                <context>${project.artifactId}</context>
+                            </properties>
+                        </deployable>
+                    </deployables>
+                    <deployer>
+                        <type>installed</type>
+                    </deployer>
+                </configuration>
+            </plugin>
+
 
         </plugins>
     </build>

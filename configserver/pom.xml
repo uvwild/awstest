@@ -35,6 +35,12 @@
     <!--</dependencies>-->
     <!--</dependencyManagement>-->
 
+    <properties>
+        <tomcat.port>8080</tomcat.port>
+        <!--<catalina.home>${env.CATALINA_HOME}</catalina.home>-->
+        <catalina.home>C:\Program Files\Apache Software Foundation\Tomcat 8.0</catalina.home>
+    </properties>
+
     <dependencies>
 
         <!-- separate dep required due to test scope in testing-base -->
@@ -117,7 +123,7 @@
     </scm>
 
     <build>
-        <finalName>dataservice-${buildNumber.timestamp}</finalName>
+        <!--<finalName>dataservice-${buildNumber.timestamp}</finalName>-->
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -227,8 +233,54 @@
                 </executions>
             </plugin>
 
+
+            <!--deploy to local tomcat on port 8080 using: -->
+            <!--    mvn -Ptomcat cargo:deploy -->
+            <!--    mvn -Ptomcat cargo:run-->
+            <!--    mvn -Ptomcat cargo:stop-->
+
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.4.8</version>
+                <configuration>
+                    <container>
+                        <containerId>tomcat8x</containerId>
+                        <home>${catalina.home}</home>
+                    </container>
+                    <configuration>
+                        <type>existing</type>
+                        <home>${catalina.home}</home>
+                    </configuration>
+                    <deployables>
+                        <deployable>
+                            <!--<groupId>${project.groupId}</groupId>-->
+                            <!--<artifactId>ROOT</artifactId>-->
+                            <!--<type>war</type>-->
+                            <properties>
+                                <context>${project.artifactId}</context>
+                            </properties>
+                        </deployable>
+                    </deployables>
+                    <deployer>
+                        <type>installed</type>
+                    </deployer>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
+    <!-- use profiles to override or specialize standard lifecycle phases -->
+    <profiles>
+        <profile>
+            <id>tomcat</id>
+            <build>
+                <plugins>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
 
 </project>

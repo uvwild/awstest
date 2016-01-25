@@ -2,5 +2,8 @@
 <configuration>
        <include resource="org/springframework/boot/logging/logback/base.xml"/>
        <!--<logger name="org.springframework.web" level="DEBUG"/>-->
-       <logger name="org.springframework.core.env" level="DEBUG"/>
+       <!--<logger name="org.springframework.core.env" level="DEBUG"/>-->
+       <logger name="org.funtime" level="DEBUG"/>
+    <logger name="org.springframework.cloud.config.server.config" level="DEBUG"/>
+
 </configuration>
