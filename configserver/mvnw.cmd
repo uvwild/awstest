@@ -66,6 +66,8 @@ echo.
 goto error
 
 :OkJHome
+if exist "%JDK_HOME%\bin\java.exe" goto jdkinit
+
 if exist "%JAVA_HOME%\bin\java.exe" goto init
 
 echo.
@@ -77,6 +79,10 @@ echo.
 goto error
 
 @REM ==== END VALIDATION ====
+
+:jdkinit
+REM use jdk
+set JAVA_HOME=%JDK_HOME%
 
 :init
 

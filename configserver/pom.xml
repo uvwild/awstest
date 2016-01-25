@@ -36,9 +36,11 @@
     <!--</dependencyManagement>-->
 
     <properties>
+        <!--<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>-->
         <tomcat.port>8080</tomcat.port>
         <!--<catalina.home>${env.CATALINA_HOME}</catalina.home>-->
         <catalina.home>C:\Program Files\Apache Software Foundation\Tomcat 8.0</catalina.home>
+        <beanstalk.plugin.version>1.4.2</beanstalk.plugin.version>
     </properties>
 
     <dependencies>
@@ -180,12 +182,12 @@
                             <Implementation-Build>$\{buildNumber}</Implementation-Build>
                         </manifestEntries>
                     </archive>
+                    <!-- this is relative to the pom.xml directory -->
                     <webResources>
-                        <resource>
-                            <!-- this is relative to the pom.xml directory -->
-                            <!--add elasticbean stuff-->
-                            <directory>elasticbeanstalk</directory>
-                        </resource>
+                        <!--<resource>-->
+                            <!--&lt;!&ndash;add elasticbean stuff&ndash;&gt;-->
+                            <!--<directory>elasticbeanstalk</directory>-->
+                        <!--</resource>-->
                         <resource>
                             <!--add jsp files from webapp-->
                             <directory>src/main/webapp</directory>
@@ -268,15 +270,57 @@
                 </configuration>
             </plugin>
 
+
         </plugins>
     </build>
 
     <!-- use profiles to override or specialize standard lifecycle phases -->
     <profiles>
         <profile>
-            <id>tomcat</id>
+            <id>eb-deploy</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <maven.install.skip>true</maven.install.skip>
+                <maven.deploy.skip>true</maven.deploy.skip>
+                <maven.build.timestamp.format>yyyy-MM-dd.HH</maven.build.timestamp.format>
+
+                <beanstalk.applicationName>${project.artifactId}</beanstalk.applicationName>
+                <beanstalk.environmentTierName>Web</beanstalk.environmentTierName>
+                <beanstalk.environmentRef>${project.artifactId}-webtier</beanstalk.environmentRef>
+                <beanstalk.environmentName>${project.artifactId}-webtier</beanstalk.environmentName>
+                <beanstalk.credentialId>default</beanstalk.credentialId>
+                <beanstalk.cnamePrefix>${project.artifactId}</beanstalk.cnamePrefix>
+                <beanstalk.useStagingDirectory>true</beanstalk.useStagingDirectory>
+                <beanstalk.plugin.version>1.4.2</beanstalk.plugin.version>
+                <beanstalk.regionName>eu-central-1</beanstalk.regionName>
+                <beanstalk.s3Bucket>partyapp-beanstalk-bucket</beanstalk.s3Bucket>
+                <beanstalk.s3Key>${project.artifactId}/${project.build.finalName}-${maven.build.timestamp}.war</beanstalk.s3Key>
+                <beanstalk.versionLabel>${maven.build.timestamp}</beanstalk.versionLabel>
+                <beanstalk.solutionStack>64bit Amazon Linux 2015.09 v2.0.6 running Tomcat 8 Java 8</beanstalk.solutionStack>
+            </properties>
             <build>
+                <defaultGoal>deploy</defaultGoal>
+                <!--<finalName>webapp1</finalName>-->
                 <plugins>
+                    <plugin>
+                        <groupId>br.com.ingenieux</groupId>
+                        <artifactId>beanstalk-maven-plugin</artifactId>
+                        <version>${beanstalk.plugin.version}</version>
+                        <configuration>
+                            <autoCreateApplication>true</autoCreateApplication>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>default-deploy</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>upload-source-bundle</goal>
+                                    <goal>create-application-version</goal>
+                                    <goal>put-environment</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
