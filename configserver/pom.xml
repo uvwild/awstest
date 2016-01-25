@@ -289,10 +289,10 @@
                 <beanstalk.environmentRef>${project.artifactId}-webtier</beanstalk.environmentRef>
                 <beanstalk.environmentName>${project.artifactId}-webtier</beanstalk.environmentName>
                 <beanstalk.credentialId>default</beanstalk.credentialId>
-                <beanstalk.cnamePrefix>${project.artifactId}</beanstalk.cnamePrefix>
+                <beanstalk.cnamePrefix>partyapp-${project.artifactId}</beanstalk.cnamePrefix>
                 <beanstalk.useStagingDirectory>true</beanstalk.useStagingDirectory>
                 <beanstalk.plugin.version>1.4.2</beanstalk.plugin.version>
-                <beanstalk.regionName>eu-central-1</beanstalk.regionName>
+                <beanstalk.region>eu-central-1</beanstalk.region>
                 <beanstalk.s3Bucket>partyapp-beanstalk-bucket</beanstalk.s3Bucket>
                 <beanstalk.s3Key>${project.artifactId}/${project.build.finalName}-${maven.build.timestamp}.war</beanstalk.s3Key>
                 <beanstalk.versionLabel>${maven.build.timestamp}</beanstalk.versionLabel>
