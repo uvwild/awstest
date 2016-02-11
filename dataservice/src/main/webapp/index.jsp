@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>--%>
 <%@page import="java.io.BufferedWriter" %>
@@ -6,7 +7,8 @@
 <%@page import="java.util.Scanner" %>
 <%
     Long count = (Long) session.getAttribute("count");
-    if (count == null) count = 0L;
+    if (count == null)
+        count = 0L;
     count += 1L;
     session.setAttribute("count", count);
     /** Log POSTs at / to a file **/
@@ -22,7 +24,8 @@
 
     } else {
 %>
-<jsp:useBean id="today" class="java.util.Date" scope="page" />
+<jsp:useBean id="appversion" class="org.funtime.Version" scope="page"/>
+<jsp:useBean id="today" class="java.util.Date" scope="page"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -70,7 +73,7 @@
             position: absolute;
             top: 0px;
             right: 50%;
-            bottom: 0px;
+            bottom: 60px;
             left: 0px;
 
             text-align: right;
@@ -89,10 +92,19 @@
             position: absolute;
             top: 0px;
             right: 0px;
-            bottom: 0px;
+            bottom: 60px;
             left: 50%;
 
             background-color: #c79cb2;
+        }
+
+        #footer {
+            position:absolute;
+            clear: both;
+            bottom:0;
+            width:100%;
+            height:60px;   /* Height of the footer */
+            background:#6cf;
         }
 
         h1 {
@@ -126,7 +138,7 @@
 </div>
 
 <div class="linksColumn">
-    <h2>What's Next? (<c:out value="${today.time}" />)</h2>
+    <h2>What's Next? (${today.time})</h2>
     <ul>
         <li><a href="./dataset/0">Get Dataset timestamp 0</a></li>
         <li><a href="./dataset/1">Get Dataset timestamp 1</a></li>
@@ -144,6 +156,22 @@
         <li/>
         <li><a href="./health">Health</a></li>
     </ul>
+</div>
+<div id="footer">
+    <table>
+        <tr>
+            <td>SimpleRef:</td>
+            <td><spring:eval expression="@version.simpleRef" /></td>
+        </tr>
+        <tr>
+            <td>Version:</td>
+            <td><spring:eval expression="@version.buildNumber" /></td>
+        </tr>
+        <tr>
+            <td>TimeStamp:</td>
+            <td><spring:eval expression="@version.timeStamp" /></td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>
