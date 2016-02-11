@@ -8,7 +8,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 /**
  * extend from servlet initializer so this runs also on a tomcat (cloud)
  */
-@SpringBootApplication
+@SpringBootApplication// (scanBasePackages = "org.funtime")
 public class DataserviceApplication extends SpringBootServletInitializer {
 
     @Override
@@ -21,4 +21,3 @@ public class DataserviceApplication extends SpringBootServletInitializer {
     }
 
 }
-

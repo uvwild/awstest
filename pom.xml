@@ -8,6 +8,14 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.cargo</groupId>
+            <artifactId>cargo-maven2-plugin</artifactId>
+            <version>1.4.8</version>
+        </dependency>
+
+    </dependencies>
     <modules>
         <module>parent</module>
         <module>common-data</module>

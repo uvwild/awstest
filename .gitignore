@@ -1,10 +1,15 @@
-/eb-tomcat-example/eb-tomcat-example.iml
+/eb-tomcat-example/
+/root.iml
 /out
-### Java template
-*.class
-
+# key files
+*.pem
+*.pub
+*.txt
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+
+### Java template
+*.class
 
 # Package Files #
 *.jar
@@ -27,4 +32,3 @@ target
 #!.elasticbeanstalk/*.cfg.yml
 #
 #!.elasticbeanstalk/*.global.yml
-

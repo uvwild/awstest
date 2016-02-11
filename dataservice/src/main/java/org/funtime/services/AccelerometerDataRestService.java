@@ -1,6 +1,8 @@
 package org.funtime.services;
 
+import io.swagger.annotations.ApiOperation;
 import org.funtime.data.LatLngValueMap;
+import org.funtime.data.TimedLatLngValueMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 
 /**
  * Created by uv on 08/12/2015 for awstest
@@ -23,18 +24,21 @@ public class AccelerometerDataRestService {
     @Autowired
     AccelerometerPersistenceService accelerometerPersistenceService;
 
+    @ApiOperation(value = "getAll", nickname = "getAll", notes = "read all data!",response = TimedLatLngValueMap.class)
     @RequestMapping(value = { "" , "/"}, method = RequestMethod.GET)
     public ResponseEntity<?> getAll() {
-        HashMap<Long,LatLngValueMap> result = accelerometerPersistenceService.getAll();
+        TimedLatLngValueMap result = accelerometerPersistenceService.getAll();
         return (result != null) ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
     }
 
+    @ApiOperation(value = "get", notes = "getOne", response = LatLngValueMap.class)
     @RequestMapping(value = "/{when}", method = RequestMethod.GET)
     public ResponseEntity<?> getDataset(@PathVariable long when) {
         LatLngValueMap result = accelerometerPersistenceService.get(when);
         return (result != null) ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
     }
 
+    @ApiOperation(value = "put", notes = "putOne")
     @RequestMapping(value = "/{when}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> putDataset(@PathVariable long when, @RequestBody LatLngValueMap data, HttpServletRequest request) throws URISyntaxException {
         String path = request.getRequestURL().toString();
