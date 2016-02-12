@@ -160,10 +160,6 @@
 <div id="footer">
     <table>
         <tr>
-            <td>SimpleRef:</td>
-            <td><spring:eval expression="@version.simpleRef" /></td>
-        </tr>
-        <tr>
             <td>Version:</td>
             <td><spring:eval expression="@version.buildNumber" /></td>
         </tr>

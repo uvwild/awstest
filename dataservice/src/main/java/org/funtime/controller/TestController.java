@@ -1,7 +1,8 @@
-package org.funtime.services;
+package org.funtime.controller;
 
 import org.funtime.data.LatLngValueMap;
 import org.funtime.data.TimedLatLngValueMap;
+import org.funtime.services.AccelerometerPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

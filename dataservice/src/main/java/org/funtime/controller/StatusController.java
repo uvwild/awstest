@@ -1,4 +1,4 @@
-package org.funtime.services;
+package org.funtime.controller;
 
 import org.funtime.Version;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,6 @@ public class StatusController {
     public ResponseEntity<String> checkHealth() {
         return ResponseEntity.ok("HealthCheck called at " + new Date().toString()
                                          + " for Version.bn: " + version.getBuildNumber()
-                                         + " for Version.sr: " + version.getSimpleRef());
+                                         + " for Version.ts: " + version.getTimeStamp());
     }
 }
