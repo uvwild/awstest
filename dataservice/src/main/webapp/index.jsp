@@ -65,7 +65,7 @@
             color: #1827cc;
         }
 
-        .textColumn, .linksColumn {
+        .textColumn, .linksColumn, #footer {
             padding: 2em;
         }
 
@@ -99,12 +99,14 @@
         }
 
         #footer {
+            margin: 8px;
             position:absolute;
             clear: both;
             bottom:0;
             width:100%;
-            height:60px;   /* Height of the footer */
-            background:#6cf;
+            height:2em;   /* Height of the footer */
+            background: #6cf;
+
         }
 
         h1 {

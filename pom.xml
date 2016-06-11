@@ -23,6 +23,7 @@
 
         <module>dataservice</module>
         <module>configserver</module>
+        <module>gateway</module>
     </modules>
 
 </project>
