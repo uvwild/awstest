@@ -1,6 +1,6 @@
 /eb-tomcat-example/
-/root.iml
 /out
+
 # key files
 *.pem
 *.pub
@@ -21,6 +21,7 @@
 hs_err_pid*
 
 # Created by .ignore support plugin (hsz.mobi)
+.gradle
 .idea
 target
 *.iml
