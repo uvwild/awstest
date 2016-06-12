@@ -1,3 +1,10 @@
+spring.application.name: dataservice
+
+server.port: 9000
+
+management.port: 9001
+management.address: 127.0.0.1
+
 cloud.aws.credentials.accessKey:  AKIAJS4OSXPXYXZ67Z5Q
 cloud.aws.credentials.secretKey:  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
 cloud.aws.region.auto:            false

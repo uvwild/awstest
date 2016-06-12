@@ -4,11 +4,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * extend from servlet initializer so this runs also on a tomcat (cloud)
  */
-@SpringBootApplication// (scanBasePackages = "org.funtime")
+@SpringBootApplication
+@EnableEurekaClient
 public class DataserviceApplication extends SpringBootServletInitializer {
 
     @Override
