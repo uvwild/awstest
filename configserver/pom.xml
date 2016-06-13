@@ -2,329 +2,385 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.funtime</groupId>
-    <artifactId>configserver</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+	<groupId>org.funtime</groupId>
+	<artifactId>configserver</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 
-    <name>configserver</name>
-    <description>ConfigServer Module deployed to AWS beanstalk</description>
+	<name>configserver</name>
+	<description>ConfigServer Module deployed to AWS beanstalk</description>
 
-    <parent>
-        <!--<groupId>org.funtime</groupId>-->
-        <!--<artifactId>parent</artifactId>-->
-        <!--<version>0.0.1-SNAPSHOT</version>-->
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.1.RELEASE</version>
-        <relativePath/>
-    </parent>
+	<parent>
+		<!--<groupId>org.funtime</groupId>-->
+		<!--<artifactId>parent</artifactId>-->
+		<!--<version>0.0.1-SNAPSHOT</version>-->
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.3.5.RELEASE</version>
+		<relativePath/>
+	</parent>
 
+	<!-- recommended approach http://projects.spring.io/spring-cloud/ -->
+	<dependencyManagement>
+		<dependencies>
 
-    <!--<dependencyManagement>-->
-    <!--<dependencies>-->
-    <!--<dependency>-->
-    <!--<groupId>org.springframework.cloud</groupId>-->
-    <!--<artifactId>spring-cloud-starter-parent</artifactId>-->
-    <!--<version>Angel.SR4</version>-->
-    <!--<type>pom</type>-->
-    <!--<scope>import</scope>-->
-    <!--</dependency>-->
-    <!--</dependencies>-->
-    <!--</dependencyManagement>-->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Brixton.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
-    <properties>
-        <!--<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>-->
-        <tomcat.port>8080</tomcat.port>
-        <!--<catalina.home>${env.CATALINA_HOME}</catalina.home>-->
-        <catalina.home>C:\Program Files\Apache Software Foundation\Tomcat 8.0</catalina.home>
-        <beanstalk.plugin.version>1.4.2</beanstalk.plugin.version>
-    </properties>
+			<!--<dependency>-->
+			<!--<groupId>org.springframework.cloud</groupId>-->
+			<!--<artifactId>spring-cloud-netflix</artifactId>-->
+			<!--<version>1.1.2.RELEASE</version>-->
+			<!--<type>pom</type>-->
+			<!--<scope>import</scope>-->
+			<!--</dependency>-->
 
-    <dependencies>
+		</dependencies>
+	</dependencyManagement>
 
-        <!-- separate dep required due to test scope in testing-base -->
-        <dependency>
-            <groupId>org.funtime</groupId>
-            <artifactId>common-data</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+	<properties>
+		<!--<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>-->
+		<!--<tomcat.port>8080</tomcat.port>-->
+		<!--<catalina.home>${env.CATALINA_HOME}</catalina.home>-->
+		<catalina.home>C:\Program Files\Apache Software Foundation\Tomcat 8.0</catalina.home>
+		<beanstalk.plugin.version>1.4.2</beanstalk.plugin.version>
+	</properties>
 
-        <dependency>
-            <groupId>org.funtime</groupId>
-            <artifactId>testing-base</artifactId>
-            <type>test-jar</type>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
+	<dependencies>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-        </dependency>
+		<!-- separate dep required due to test scope in testing-base -->
+		<dependency>
+			<groupId>org.funtime</groupId>
+			<artifactId>common-data</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
-        <!--also deployable to container as war -->
-        <!--http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging-->
+		<dependency>
+			<groupId>org.funtime</groupId>
+			<artifactId>testing-base</artifactId>
+			<type>test-jar</type>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
+		</dependency>
 
-        <!--also deployable to container as war -->
-        <!--http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
+		<!--also deployable to container as war -->
+		<!--http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-configuration-processor</artifactId>-->
-        <!--<optional>true</optional>-->
-        <!--</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.6</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-config-server</artifactId>
-            <version>1.0.2.RELEASE</version>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-server</artifactId>
+			<version>1.1.1.RELEASE</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
 
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.6</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <!--TEST SCOPE #####################-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <!--<scope>test</scope>-->
-        </dependency>
-
-
-    </dependencies>
-
-    <scm>
-        <connection>scm:git:http://127.0.0.1/dummy</connection>
-        <developerConnection>scm:git:https://127.0.0.1/dummy</developerConnection>
-        <tag>HEAD</tag>
-        <url>http://127.0.0.1/dummy</url>
-    </scm>
-
-    <build>
-        <!--<finalName>dataservice-${buildNumber.timestamp}</finalName>-->
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <buildNumberPropertyName>buildNumber.value</buildNumberPropertyName>
-                    <timestampPropertyName>buildNumber.timestamp</timestampPropertyName>
-                    <format>{0,date,yyyyMMdd-HHmm}</format>
-                    <items>
-                        <item>timestamp</item>
-                    </items>
-                    <revisionOnScmFailure>unknownbuild</revisionOnScmFailure>
-                    <!--<doCheck>true</doCheck>-->
-                    <doUpdate>false</doUpdate>
-                </configuration>
-            </plugin>
-
-            <!--#########################################################################################-->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
-            <!--#########################################################################################-->
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-
-            <!--#########################################################################################-->
-            <!-- PACKAGE WAR -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <Implementation-Build>$\{buildNumber}</Implementation-Build>
-                        </manifestEntries>
-                    </archive>
-                    <!-- this is relative to the pom.xml directory -->
-                    <webResources>
-                        <!--<resource>-->
-                            <!--&lt;!&ndash;add elasticbean stuff&ndash;&gt;-->
-                            <!--<directory>elasticbeanstalk</directory>-->
-                        <!--</resource>-->
-                        <resource>
-                            <!--add jsp files from webapp-->
-                            <directory>src/main/webapp</directory>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
-
-            <!--#########################################################################################-->
-            <!-- INTEGRATION TESTS -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*ITest.java</exclude>
-                    </excludes>
-                    <systemPropertyVariables>
-                        <!-- to select the right jar in the ITest -->
-                        <maven.project.name>${project.name}</maven.project.name>
-                        <maven.project.finalName>${project.build.finalName}</maven.project.finalName>
-                        <maven.project.version>${project.version}</maven.project.version>
-                        <maven.project.target>${project.build.directory}</maven.project.target>
-                    </systemPropertyVariables>
-                </configuration>
-                <executions>
-                    <!-- run integration tests -->
-                    <execution>
-                        <id>integration-test</id>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <phase>integration-test</phase>
-                        <configuration>
-                            <reuseForks>false</reuseForks>
-                            <forkCount>4</forkCount>
-                            <excludes>
-                                <exclude>none</exclude>
-                            </excludes>
-                            <includes>
-                                <include>**/*ITest.java</include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 
 
-            <!--deploy to local tomcat on port 8080 using: -->
-            <!--    mvn -Ptomcat cargo:deploy -->
-            <!--    mvn -Ptomcat cargo:run-->
-            <!--    mvn -Ptomcat cargo:stop-->
-
-            <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
-                <version>1.4.8</version>
-                <configuration>
-                    <container>
-                        <containerId>tomcat8x</containerId>
-                        <home>${catalina.home}</home>
-                    </container>
-                    <configuration>
-                        <type>existing</type>
-                        <home>${catalina.home}</home>
-                    </configuration>
-                    <deployables>
-                        <deployable>
-                            <!--<groupId>${project.groupId}</groupId>-->
-                            <!--<artifactId>ROOT</artifactId>-->
-                            <!--<type>war</type>-->
-                            <properties>
-                                <context>${project.artifactId}</context>
-                            </properties>
-                        </deployable>
-                    </deployables>
-                    <deployer>
-                        <type>installed</type>
-                    </deployer>
-                </configuration>
-            </plugin>
+		<!--TEST SCOPE #####################-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<!--<scope>test</scope>-->
+		</dependency>
 
 
-        </plugins>
-    </build>
+	</dependencies>
 
-    <!-- use profiles to override or specialize standard lifecycle phases -->
-    <profiles>
-        <profile>
-            <id>eb-deploy</id>
-            <properties>
-                <maven.test.skip>true</maven.test.skip>
-                <maven.install.skip>true</maven.install.skip>
-                <maven.deploy.skip>true</maven.deploy.skip>
-                <maven.build.timestamp.format>yyyy-MM-dd.HH</maven.build.timestamp.format>
+	<scm>
+		<connection>scm:git:http://127.0.0.1/dummy</connection>
+		<developerConnection>scm:git:https://127.0.0.1/dummy</developerConnection>
+		<tag>HEAD</tag>
+		<url>http://127.0.0.1/dummy</url>
+	</scm>
 
-                <beanstalk.applicationName>${project.artifactId}</beanstalk.applicationName>
-                <beanstalk.environmentTierName>Web</beanstalk.environmentTierName>
-                <beanstalk.environmentRef>${project.artifactId}-webtier</beanstalk.environmentRef>
-                <beanstalk.environmentName>${project.artifactId}-webtier</beanstalk.environmentName>
-                <beanstalk.credentialId>default</beanstalk.credentialId>
-                <beanstalk.cnamePrefix>partyapp-${project.artifactId}</beanstalk.cnamePrefix>
-                <beanstalk.useStagingDirectory>true</beanstalk.useStagingDirectory>
-                <beanstalk.plugin.version>1.4.2</beanstalk.plugin.version>
-                <beanstalk.region>eu-central-1</beanstalk.region>
-                <beanstalk.s3Bucket>partyapp-beanstalk-bucket</beanstalk.s3Bucket>
-                <beanstalk.s3Key>${project.artifactId}/${project.build.finalName}-${maven.build.timestamp}.war</beanstalk.s3Key>
-                <beanstalk.versionLabel>${maven.build.timestamp}</beanstalk.versionLabel>
-                <beanstalk.solutionStack>64bit Amazon Linux 2015.09 v2.0.6 running Tomcat 8 Java 8</beanstalk.solutionStack>
-            </properties>
-            <build>
-                <defaultGoal>deploy</defaultGoal>
-                <!--<finalName>webapp1</finalName>-->
-                <plugins>
-                    <plugin>
-                        <groupId>br.com.ingenieux</groupId>
-                        <artifactId>beanstalk-maven-plugin</artifactId>
-                        <version>${beanstalk.plugin.version}</version>
-                        <configuration>
-                            <autoCreateApplication>true</autoCreateApplication>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>default-deploy</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>upload-source-bundle</goal>
-                                    <goal>create-application-version</goal>
-                                    <goal>put-environment</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+	<build>
+		<!--<finalName>dataservice-${buildNumber.timestamp}</finalName>-->
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<buildNumberPropertyName>buildNumber.value</buildNumberPropertyName>
+					<timestampPropertyName>buildNumber.timestamp</timestampPropertyName>
+					<format>{0,date,yyyyMMdd-HHmm}</format>
+					<items>
+						<item>timestamp</item>
+					</items>
+					<revisionOnScmFailure>unknownbuild</revisionOnScmFailure>
+					<!--<doCheck>true</doCheck>-->
+					<doUpdate>false</doUpdate>
+				</configuration>
+			</plugin>
 
-    </profiles>
+			<!--#########################################################################################-->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<!--#########################################################################################-->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<!--#########################################################################################-->
+			<!-- PACKAGE WAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Build>$\{buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+					<!-- this is relative to the pom.xml directory -->
+					<webResources>
+						<!--<resource>-->
+						<!--&lt;!&ndash;add elasticbean stuff&ndash;&gt;-->
+						<!--<directory>elasticbeanstalk</directory>-->
+						<!--</resource>-->
+						<resource>
+							<!--add jsp files from webapp-->
+							<directory>src/main/webapp</directory>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
+			<!--#########################################################################################-->
+			<!-- INTEGRATION TESTS -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/*ITest.java</exclude>
+					</excludes>
+					<systemPropertyVariables>
+						<!-- to select the right jar in the ITest -->
+						<maven.project.name>${project.name}</maven.project.name>
+						<maven.project.finalName>${project.build.finalName}</maven.project.finalName>
+						<maven.project.version>${project.version}</maven.project.version>
+						<maven.project.target>${project.build.directory}</maven.project.target>
+					</systemPropertyVariables>
+				</configuration>
+				<executions>
+					<!-- run integration tests -->
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<phase>integration-test</phase>
+						<configuration>
+							<reuseForks>false</reuseForks>
+							<forkCount>4</forkCount>
+							<excludes>
+								<exclude>none</exclude>
+							</excludes>
+							<includes>
+								<include>**/*ITest.java</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<!--deploy to local tomcat on port 8080 using: -->
+			<!--    mvn -Ptomcat cargo:deploy -->
+			<!--    mvn -Ptomcat cargo:run-->
+			<!--    mvn -Ptomcat cargo:stop-->
+
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.4.8</version>
+				<configuration>
+					<container>
+						<containerId>tomcat8x</containerId>
+						<home>${catalina.home}</home>
+					</container>
+					<configuration>
+						<type>existing</type>
+						<home>${catalina.home}</home>
+					</configuration>
+					<deployables>
+						<deployable>
+							<!--<groupId>${project.groupId}</groupId>-->
+							<!--<artifactId>ROOT</artifactId>-->
+							<!--<type>war</type>-->
+							<properties>
+								<context>${project.artifactId}</context>
+							</properties>
+						</deployable>
+					</deployables>
+					<deployer>
+						<type>installed</type>
+					</deployer>
+				</configuration>
+			</plugin>
+
+
+		</plugins>
+	</build>
+
+	<!-- use profiles to override or specialize standard lifecycle phases -->
+	<profiles>
+		<profile>
+			<id>eb-deploy</id>
+			<properties>
+				<maven.test.skip>true</maven.test.skip>
+				<maven.install.skip>true</maven.install.skip>
+				<maven.deploy.skip>true</maven.deploy.skip>
+				<maven.build.timestamp.format>yyyy-MM-dd.HH</maven.build.timestamp.format>
+
+				<beanstalk.applicationName>${project.artifactId}</beanstalk.applicationName>
+				<beanstalk.environmentTierName>Web</beanstalk.environmentTierName>
+				<beanstalk.environmentRef>${project.artifactId}-webtier</beanstalk.environmentRef>
+				<beanstalk.environmentName>${project.artifactId}-webtier</beanstalk.environmentName>
+				<beanstalk.credentialId>default</beanstalk.credentialId>
+				<beanstalk.cnamePrefix>partyapp-${project.artifactId}</beanstalk.cnamePrefix>
+				<beanstalk.useStagingDirectory>true</beanstalk.useStagingDirectory>
+				<beanstalk.plugin.version>1.4.2</beanstalk.plugin.version>
+				<beanstalk.region>eu-central-1</beanstalk.region>
+				<beanstalk.s3Bucket>partyapp-beanstalk-bucket</beanstalk.s3Bucket>
+				<beanstalk.s3Key>${project.artifactId}/${project.build.finalName}-${maven.build.timestamp}.war</beanstalk.s3Key>
+				<beanstalk.versionLabel>${maven.build.timestamp}</beanstalk.versionLabel>
+				<beanstalk.solutionStack>64bit Amazon Linux 2015.09 v2.0.6 running Tomcat 8 Java 8</beanstalk.solutionStack>
+			</properties>
+			<build>
+				<defaultGoal>deploy</defaultGoal>
+				<!--<finalName>webapp1</finalName>-->
+				<plugins>
+					<plugin>
+						<groupId>br.com.ingenieux</groupId>
+						<artifactId>beanstalk-maven-plugin</artifactId>
+						<version>${beanstalk.plugin.version}</version>
+						<configuration>
+							<autoCreateApplication>true</autoCreateApplication>
+						</configuration>
+						<executions>
+							<execution>
+								<id>default-deploy</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>upload-source-bundle</goal>
+									<goal>create-application-version</goal>
+									<goal>put-environment</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+
+	<repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/libs-snapshot-local</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/libs-milestone-local</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>http://repo.spring.io/libs-release-local</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/libs-snapshot-local</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/libs-milestone-local</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 
 </project>

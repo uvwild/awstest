@@ -10,12 +10,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 
-@Component
+// @Component  // included already in @Configuration
 @Configuration
 @ConfigurationProperties(locations = "classpath:/bootstrap.yml", ignoreInvalidFields = true, ignoreUnknownFields = true)
 @Getter
@@ -45,10 +44,10 @@ public class BootstrapProperties {
     ConfigurableListableBeanFactory beanFactory;
 
     /**
-     * Property placeholder configurer needed to process @Value annotations
+     * Property placeholder configurer needed to process @Value annotations - do it static to satisfy bean factory
      */
     @Bean
-    public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
+    static public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
         PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
         YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
         yaml.setResources(new ClassPathResource("bootstrap.yml"));

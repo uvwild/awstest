@@ -1,5 +1,6 @@
 package org.funtime.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
@@ -7,6 +8,7 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
 import org.springframework.cloud.config.server.EnableConfigServer;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,13 +22,17 @@ import java.util.logging.Logger;
  * Created by uv on 10/12/2015 for awstest
  * SpringBootServletInitializer added to run this in a eb container
  */
-@Profile("default")
+@Profile("local")  // move profile selection to bootstrap.yml
 @ContextConfiguration(initializers = ConfigFileApplicationContextInitializer.class)
 @SpringBootApplication
-@EnableConfigServer
+@EnableEurekaClient         // register with eureka
+@EnableConfigServer         //
 public class ConfigServerApplication extends SpringBootServletInitializer
 {
     static Logger LOG = Logger.getLogger(ConfigServerApplication.class.getName());
+
+    @Value("${server.port}")
+    private Integer serverPort;
 
     @Override
     protected SpringApplicationBuilder configure (SpringApplicationBuilder builder){
@@ -47,9 +53,8 @@ public class ConfigServerApplication extends SpringBootServletInitializer
     public EmbeddedServletContainerFactory servletContainer() {
 
         TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
-        int port = 8080;
-        LOG.log(Level.FINE, "port: " + port);
-        factory.setPort(port);
+        LOG.log(Level.FINE, "port: " + serverPort);     // use server port from config
+        factory.setPort(serverPort);
         factory.setSessionTimeout(10, TimeUnit.MINUTES);
         //factory.addErrorPages(new ErrorPage(HttpStatus.404, "/notfound.html"));
         return factory;

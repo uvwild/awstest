@@ -1,57 +1,47 @@
 info:
-  component: Config Server
+  component: Config Server for AWSTEST
 spring:
-  main:
-    banner_mode: off
-  profiles:
-# this uses the adefault profile when not specified  it is redundant to @ActiveProfile("local")
-#    active: local
   application:
     name: configserver
+  main:
+    banner_mode: console
+  profiles:
+    active: local     # this is redundant to @ActiveProfile("local")
   jmx:
     default_domain: cloud.config.server
 
----
-
-spring:
-  profiles: extra
-  cloud:
-    config:
-      server:
-        git:
-          uri: https://github.com/spring-cloud-samples/config-repo
-#          basedir: /c:/Users/uv/config-repo
-#          uri: file://c:/Users/uv/config-repo
-          repos:
-            local:
-# The pattern format is a comma-separated list of {application}/{profile} names with wildcards (where a pattern beginning with a wildcard may need to be quoted)
-              pattern: local
-# Spring Cloud Config Server supports a git repository URL with placeholders for the {application} and {profile} (and {label}
-              uri: https://github.com/spring-cloud-samples/config-repo
-
-server:
-  port: 7777
-management:
-  context-path: /admin
-dummy: dummyExtra
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
 
 ---
 
 spring:
-  profiles: default
+  profiles: banana
   cloud:
     config:
+# http://stackoverflow.com/questions/34195002/how-to-ask-spring-cloud-config-server-to-checkout-configuration-from-specific-br
+#      label: master        # setting for branch in git repo discouraged
+
       server:
         git:
           uri: https://github.com/spring-cloud-samples/config-repo
-#          basedir: /c:/Users/uv/config-repo
-#          uri: file://c:/Users/uv/config-repo
-          repos:
-            local:
+#          uri: file://c:/Users/uv/IdeaProjects/config-repo
+          # checkout destination for git
+          basedir: /c:/Users/uv/IdeaProjects/awstest/target/config
+#          repos:
+#            local:
 # The pattern format is a comma-separated list of {application}/{profile} names with wildcards (where a pattern beginning with a wildcard may need to be quoted)
-              pattern: local
+#              pattern: /{application}.yml
 # Spring Cloud Config Server supports a git repository URL with placeholders for the {application} and {profile} (and {label}
-              uri: https://github.com/spring-cloud-samples/config-repo
+#        clients use this pattern to access config server settings
+#       /{application}/{profile}[/{label}]
+#       /{application}-{profile}.yml
+#       /{label}/{application}-{profile}.yml
+#       /{application}-{profile}.properties
+#       /{label}/{application}-{profile}.properties
+#              uri: https://github.com/spring-cloud-samples/config-repo
 
 server:
   port: 8888
@@ -67,18 +57,74 @@ spring:
     config:
       server:
         git:
-#          uri: https://github.com/spring-cloud-samples/config-repo
-#          basedir: /c:/Users/uv/config-repo
-          uri: file:///c:/Users/uv/config-repo
-          repos:
-            local:
-              pattern: local*
-              uri: file:///c:/Users/uv/config-repo
+          uri: file:///c:/Users/uv/IdeaProjects/config-repo
+#          basedir: /c:/Users/uv/IdeaProjects/awstest/target/config    # TODO this seems not to be used ?!?
+#          repos:
+#            local:
+#              pattern: /{application}.yml,/{application}-{profile}.yml
+#              uri: file:///c:/Users/uv/IdeaProjects/config-repo
 
 server:
-  port: 9999
+  port: 8888
 management:
 # seemingly the separator is flexible -_ or camelcase
-  context-path: /adm
+  context-path: /config
 dummy: dummyLocal
 
+---
+
+spring:
+  profiles: cloud
+  cloud:
+    config:
+      uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@${PREFIX:}configserver.${application.domain:cfapps.io}}
+oauth2:
+  client:
+    tokenUri: ${vcap.services.${PREFIX:}sso.credentials.tokenUri:}
+    authorizationUri: ${vcap.services.${PREFIX:}sso.credentials.authorizationUri:}
+    clientId: ${vcap.services.${PREFIX:}sso.credentials.clientId:}
+    clientSecret: ${vcap.services.${PREFIX:}sso.credentials.clientSecret:}
+  resource:
+    tokenInfoUri: ${vcap.services.${OAUTH2_RESOURCE_SERVICEID:${oauth2.resource.serviceId:sso}}.credentials.tokenInfoUri:}
+    serviceId: ${PREFIX:}resource
+application:
+  domain: ${APPLICATION_DOMAIN:cfapps.io}
+endpoints:
+  restart: enabled
+eureka:
+  password: password
+  instance:
+    hostname: ${vcap.application.uris[0]:localhost}
+    nonSecurePort: 80
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.${PREFIX:}eureka.credentials.uri:http://user:${eureka.password:}@${PREFIX:}eureka.${application.domain:cfapps.io}}/eureka/
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    config:
+      uri: http://${CONFIGSERVER_1_PORT_8888_TCP_ADDR:localhost}:8888
+endpoints:
+  restart: enabled
+eureka:
+  instance:
+    nonSecurePort: 80
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_1_PORT_8761_TCP_ADDR:localhost}:8761/eureka/
