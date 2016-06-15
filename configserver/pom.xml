@@ -180,32 +180,32 @@
 
 			<!--#########################################################################################-->
 			<!-- PACKAGE WAR -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<manifestEntries>
-							<Implementation-Build>$\{buildNumber}</Implementation-Build>
-						</manifestEntries>
-					</archive>
-					<!-- this is relative to the pom.xml directory -->
-					<webResources>
+			<!--<plugin>-->
+				<!--<groupId>org.apache.maven.plugins</groupId>-->
+				<!--<artifactId>maven-war-plugin</artifactId>-->
+				<!--<version>2.6</version>-->
+				<!--<configuration>-->
+					<!--<archive>-->
+						<!--<manifest>-->
+							<!--<addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
+						<!--</manifest>-->
+						<!--<manifestEntries>-->
+							<!--<Implementation-Build>$\{buildNumber}</Implementation-Build>-->
+						<!--</manifestEntries>-->
+					<!--</archive>-->
+					<!--&lt;!&ndash; this is relative to the pom.xml directory &ndash;&gt;-->
+					<!--<webResources>-->
+						<!--&lt;!&ndash;<resource>&ndash;&gt;-->
+						<!--&lt;!&ndash;&lt;!&ndash;add elasticbean stuff&ndash;&gt;&ndash;&gt;-->
+						<!--&lt;!&ndash;<directory>elasticbeanstalk</directory>&ndash;&gt;-->
+						<!--&lt;!&ndash;</resource>&ndash;&gt;-->
 						<!--<resource>-->
-						<!--&lt;!&ndash;add elasticbean stuff&ndash;&gt;-->
-						<!--<directory>elasticbeanstalk</directory>-->
+							<!--&lt;!&ndash;no jsp files here &ndash;&gt;-->
+							<!--&lt;!&ndash;<directory>src/main/webapp</directory>&ndash;&gt;-->
 						<!--</resource>-->
-						<resource>
-							<!--add jsp files from webapp-->
-							<directory>src/main/webapp</directory>
-						</resource>
-					</webResources>
-				</configuration>
-			</plugin>
+					<!--</webResources>-->
+				<!--</configuration>-->
+			<!--</plugin>-->
 
 			<!--#########################################################################################-->
 			<!-- INTEGRATION TESTS -->
