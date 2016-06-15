@@ -7,10 +7,10 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
- * extend from servlet initializer so this runs also on a tomcat (cloud)
+ * extend from servlet initializer so this runs also on a tomcat
  */
-@SpringBootApplication
 @EnableEurekaClient
+@SpringBootApplication
 public class DataserviceApplication extends SpringBootServletInitializer {
 
     @Override

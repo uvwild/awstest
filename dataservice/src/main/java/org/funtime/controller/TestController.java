@@ -4,15 +4,14 @@ import org.funtime.data.LatLngValueMap;
 import org.funtime.data.TimedLatLngValueMap;
 import org.funtime.services.AccelerometerPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by uv on 23.01.2016 for awstest
@@ -53,6 +52,14 @@ public class TestController {
             // nothing to do really
         }
         return ResponseEntity.ok(String.format("delay: %dms", delayMilliSeconds));
+    }
+
+    @Autowired
+    ApplicationContext applicationContext;
+
+    @RequestMapping(value = "/beans", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> listOfDefinedBeans() {
+        return ResponseEntity.ok(Arrays.asList(applicationContext.getBeanDefinitionNames()));
     }
 
 }

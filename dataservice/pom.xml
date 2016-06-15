@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-	<parent>
-		<!--<groupId>org.funtime</groupId>-->
-		<!--<artifactId>parent</artifactId>-->
-		<!--<version>0.0.1-SNAPSHOT</version>-->
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.3.5.RELEASE</version>
-		<relativePath/>
-	</parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.funtime</groupId>
@@ -22,7 +11,16 @@
 	<name>dataservice</name>
 	<description>DataService Module for Spring Boot deployed to AWS beanstalk</description>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.3.5.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
 		<!--<tomcat.port>8080</tomcat.port>-->
 		<!--<catalina.home>${env.CATALINA_HOME}</catalina.home>-->
 		<catalina.home>C:\Program Files\Apache Software Foundation\Tomcat 8.0</catalina.home>
@@ -30,84 +28,41 @@
 		<cargo.maven2.plugin.version>1.4.9</cargo.maven2.plugin.version>
 	</properties>
 
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-netflix</artifactId>
-				<version>1.1.0.RELEASE</version>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Brixton.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
+
 	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
 		<!-- separate dep reuired due to test scope in testing-base -->
 		<dependency>
 			<groupId>org.funtime</groupId>
 			<artifactId>common-data</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.funtime</groupId>
-			<artifactId>testing-base</artifactId>
-			<type>test-jar</type>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot</artifactId>
-		</dependency>
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.cloud</groupId>-->
-		<!--<artifactId>spring-cloud-starter-aws-jdbc</artifactId>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.cloud</groupId>-->
-		<!--<artifactId>spring-cloud-starter-aws-messaging</artifactId>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.cloud</groupId>-->
-		<!--<artifactId>spring-cloud-starter-bus-amqp</artifactId>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.cloud</groupId>-->
-		<!--<artifactId>spring-cloud-cloudfoundry-discovery</artifactId>-->
-		<!--<version>1.0.0.M3</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.cloud</groupId>-->
-		<!--<artifactId>spring-cloud-starter</artifactId>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.boot</groupId>-->
-		<!--<artifactId>spring-boot-starter-cloud-connectors</artifactId>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.cloud</groupId>-->
-		<!--<artifactId>spring-cloud-starter-stream-rabbit</artifactId>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.boot</groupId>-->
-		<!--<artifactId>spring-boot-starter-data-elasticsearch</artifactId>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.boot</groupId>-->
-		<!--<artifactId>spring-boot-starter-jdbc</artifactId>-->
-		<!--</dependency>-->
-
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<!--also deployable to container as war -->
@@ -118,18 +73,13 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
-		</dependency>
-
+		<!--#########################################################################################-->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
 
-		<!--#########################################################################################-->
 		<!--lombok-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -151,33 +101,11 @@
 			<version>2.3.1</version>
 		</dependency>
 
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.boot</groupId>-->
-		<!--<artifactId>spring-boot-starter-websocket</artifactId>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.boot</groupId>-->
-		<!--<artifactId>spring-boot-starter-ws</artifactId>-->
-		<!--</dependency>-->
-
-		<!-- JSP JSTL includes -->
-		<!--<dependency>-->
-		<!--<groupId>org.apache.taglibs</groupId>-->
-		<!--<artifactId>taglibs-standard-spec</artifactId>-->
-		<!--<version>1.2.1</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-		<!--<groupId>com.h2database</groupId>-->
-		<!--<artifactId>h2</artifactId>-->
-		<!--<scope>runtime</scope>-->
-		<!--</dependency>-->
-
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
 			<version>4.1.1.4</version>
-			<!--<scope>provided</scope>-->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -186,19 +114,16 @@
 			<version>28</version>
 			<!--<type>apklib</type>-->
 		</dependency>
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.data</groupId>-->
-		<!--<artifactId>spring-data-commons</artifactId>-->
-		<!--<version>1.8.4.RELEASE</version>-->
-		<!--</dependency>-->
 
-		<!--<dependency>-->
-		<!--<groupId>org.apache.commons</groupId>-->
-		<!--<artifactId>commons-lang3</artifactId>-->
-		<!--<version>3.1</version>-->
-		<!--</dependency>-->
+		<!-- TEST SCOPE #####################-->
+		<dependency>
+			<groupId>org.funtime</groupId>
+			<artifactId>common-testing</artifactId>
+			<type>test-jar</type>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
 
-		<!--TEST SCOPE #####################-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -220,8 +145,8 @@
 				<directory>${project.basedir}/src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>version.properties</include>
-					<include>application.yml</include>
+					<include>*.properties</include>
+					<include>*.yml</include>
 				</includes>
 			</resource>
 			<resource>
@@ -234,6 +159,7 @@
 		</resources>
 		<!--<finalName>dataservice-${buildNumber.timestamp}</finalName>-->
 		<plugins>
+			<!--#########################################################################################-->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>buildnumber-maven-plugin</artifactId>

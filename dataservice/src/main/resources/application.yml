@@ -1,22 +1,7 @@
-spring.application.name: dataservice
-
-server.port: 9000
-
-management.port: 9001
-management.address: 127.0.0.1
-
-cloud.aws.credentials.accessKey:  AKIAJS4OSXPXYXZ67Z5Q
-cloud.aws.credentials.secretKey:  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
-cloud.aws.region.auto:            false
-cloud.aws.region.static:          eu-central-1
-
-
-spring.cloud.config.server.prefix: /config
-
-
-encrypt:
-  keyStore:
-    location: classpath:/server.jks
-    password: letmein
-    alias: mytestkey
-    secret: changeme
+#spring.config.name: dataservice
+#spring.application.name: dataservice
+#spring.profiles.active: local
+#spring.config:
+#  name: dataservice
+#  env: local
+#

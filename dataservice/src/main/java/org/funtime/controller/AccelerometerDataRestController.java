@@ -1,5 +1,6 @@
 package org.funtime.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import org.funtime.data.LatLngValueMap;
 import org.funtime.data.TimedLatLngValueMap;
@@ -23,6 +24,9 @@ public class AccelerometerDataRestController {
     static public final String entryPoint = "/dataset";
 
     @Autowired
+    ObjectMapper objectMapper;
+
+    @Autowired
     public AccelerometerPersistenceService accelerometerPersistenceService;
 
     @ApiOperation(value = "getAll", nickname = "getAll", notes = "read all data!",response = TimedLatLngValueMap.class)
@@ -39,6 +43,28 @@ public class AccelerometerDataRestController {
         return (result != null) ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
     }
 
+
+    @ApiOperation(value = "getObject", notes = "get a json", response = String.class)
+    @RequestMapping(value = "/object/{when}", method = RequestMethod.GET, produces = "application/json")
+    public LatLngValueMap getObject(@PathVariable long when) {
+        LatLngValueMap result = accelerometerPersistenceService.get(when);
+        return result;
+    }
+
+    @ApiOperation(value = "putObject", notes = "putOneObject")
+    @RequestMapping(value = "/object/{when}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LatLngValueMap putObject(@PathVariable long when, @RequestBody LatLngValueMap data, HttpServletRequest request) throws URISyntaxException {
+        String path = request.getRequestURL().toString();
+
+        if (data != null) {
+            boolean existed = accelerometerPersistenceService.put(when, data);
+            return data;
+//            return existed?ResponseEntity.created(new URI(path)).build():ResponseEntity.ok().build();
+        } else {
+            return null;
+        }
+    }
+
     @ApiOperation(value = "put", notes = "putOne")
     @RequestMapping(value = "/{when}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> putDataset(@PathVariable long when, @RequestBody LatLngValueMap data, HttpServletRequest request) throws URISyntaxException {
@@ -49,7 +75,7 @@ public class AccelerometerDataRestController {
             return ResponseEntity.created(new URI(path)).build();
 //            return existed?ResponseEntity.created(new URI(path)).build():ResponseEntity.ok().build();
         } else {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().header("Reason", String.format("called with when=%d and body=%s",when,data)).build();
         }
     }
 

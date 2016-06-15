@@ -1,6 +1,8 @@
+# just enough to find the config on our server
 spring:
-  application:
-    name: eureka
-  cloud:
-    config:
-      uri: ${CONFIG_SERVER_URL:http://localhost:8888}
+  application.name: eureka
+  profiles.active: local
+
+
+# fallback when config server down
+server.port: 8761

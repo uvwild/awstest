@@ -3,7 +3,6 @@ package org.funtime.controller;
 import org.funtime.DataserviceApplication;
 import org.funtime.data.LatLngConstants;
 import org.funtime.data.LatLngValueMap;
-import org.funtime.services.AccelerometerPersistenceService;
 import org.junit.Test;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.HttpStatus;
@@ -20,11 +19,12 @@ import static junit.framework.TestCase.assertEquals;
 @SpringApplicationConfiguration(classes = DataserviceApplication.class)
 public class AccelerometerDataRestControllerITest extends org.funtime.testing.AbstractIntegrationTest {
 
-    AccelerometerDataRestController accelerometerDataRestController;
-    AccelerometerPersistenceService accelerometerPersistenceService;
+//    AccelerometerDataRestController accelerometerDataRestController;
+//    AccelerometerPersistenceService accelerometerPersistenceService;
 
     static String restServicePathTestDate = String.format("%s/%d", AccelerometerDataRestController.entryPoint, testdate);
     static String restServicePathDefault = String.format("%s/%d", AccelerometerDataRestController.entryPoint, 0);
+    static String restServicePathDefaultObject = String.format("%s/object/%d", AccelerometerDataRestController.entryPoint, 0);
 
     @Test
     public void testGetDatasetZero() throws Exception {
@@ -40,6 +40,15 @@ public class AccelerometerDataRestControllerITest extends org.funtime.testing.Ab
         assertNotNull(resultMap);
         assertEquals(latLngValueTestMap, resultMap);
     }
+
+    @Test
+    public void testGetObject() throws Exception {
+        String responseEntity = getEntity(restServicePathDefault, String.class);
+        assertNotNull(responseEntity);
+        String expected = "{\"lat/lng: (53.31091,12.739023)\":[1,2,3,4,5]}";
+        assertEquals(expected, responseEntity);
+    }
+
 
     @Test
     public void testPutDataset() throws Exception {
