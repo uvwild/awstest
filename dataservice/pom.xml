@@ -58,6 +58,15 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- requires a binder implementation -->
+		<!-- http://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-config-monitor -->
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.cloud</groupId>-->
+			<!--<artifactId>spring-cloud-config-monitor</artifactId>-->
+			<!--<version>1.1.0.RELEASE</version>-->
+		<!--</dependency>-->
+
+
 		<!-- separate dep reuired due to test scope in testing-base -->
 		<dependency>
 			<groupId>org.funtime</groupId>

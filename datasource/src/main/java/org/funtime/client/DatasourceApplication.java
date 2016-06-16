@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
-@SpringBootApplication(scanBasePackages = {"org.funtime", "org.funtime.client", "org.funtime.data"})
+@SpringBootApplication(scanBasePackages = {"org.funtime","org.funtime.client.tasks", "org.funtime.client.*"})
 @EnableEurekaClient
 @EnableFeignClients
 public class DatasourceApplication {

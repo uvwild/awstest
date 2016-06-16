@@ -59,6 +59,13 @@
 			<artifactId>spring-cloud-starter-feign</artifactId>
 		</dependency>
 
+		<!-- http://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-config-monitor -->
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.cloud</groupId>-->
+			<!--<artifactId>spring-cloud-config-monitor</artifactId>-->
+			<!--<version>1.1.0.RELEASE</version>-->
+		<!--</dependency>-->
+
 		<!-- http://mvnrepository.com/artifact/com.netflix.feign/feign-jackson -->
 		<dependency>
 			<groupId>com.netflix.feign</groupId>

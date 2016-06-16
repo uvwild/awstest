@@ -19,11 +19,15 @@
 
 	<build>
 		<plugins>
+			<!-- disable spring boot for this pom -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<executions>
 				</executions>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -37,18 +41,42 @@
 
 	</dependencies>
 
-	<modules>
-		<!--infrastructure-->
-		<module>configserver</module>
-		<module>gateway</module>
-		<module>eureka</module>
+	<profiles>
+		<profile>
+			<id>infra</id>
+			<modules>
 
-		<module>parent</module>
-		<module>common-data</module>
-		<module>common-testing</module>
+				<module>common-data</module>
+				<module>common-testing</module>
 
-		<module>dataservice</module>
-		<module>datasource</module>
-	</modules>
+				<!--server infrastructure-->
+				<module>configserver</module>
+				<module>eureka</module>
+				<module>gateway</module>
 
+			</modules>
+
+		</profile>
+		<profile>
+			<id>all</id>
+			<modules>
+
+				<!-- software infrastructure-->
+				<module>parent</module>
+				<module>common-data</module>
+				<module>common-testing</module>
+
+				<!--server infrastructure-->
+				<module>configserver</module>
+				<module>gateway</module>
+				<module>eureka</module>
+
+				<!-- server infrastructure-->
+				<module>dataservice</module>
+				<module>datasource</module>
+
+			</modules>
+		</profile>
+
+	</profiles>
 </project>

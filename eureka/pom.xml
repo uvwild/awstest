@@ -51,7 +51,8 @@
 				<version>0.4.10</version>
 				<executions>
 					<execution>
-						<phase>package</phase>
+						<!-- disable automatic docker for now -->
+						<phase>none</phase>
 						<goals>
 							<goal>build</goal>
 						</goals>
@@ -100,6 +101,8 @@
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
                 <configuration>
+	                <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
+	                <verbose>true</verbose>
                   <failOnNoGitDirectory>false</failOnNoGitDirectory>
                 </configuration>
 			</plugin>
@@ -139,6 +142,7 @@
 			</snapshots>
 		</repository>
 	</repositories>
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-snapshots</id>

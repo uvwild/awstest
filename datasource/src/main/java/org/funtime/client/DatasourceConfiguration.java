@@ -6,6 +6,7 @@ import feign.hystrix.HystrixFeign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.ObjectFactory;
@@ -33,7 +34,7 @@ public class DatasourceConfiguration {
     Log logger = LogFactory.getLog(this.getClass());
 
     @Value("${threadpool.size}")
-    @Getter
+    @Getter @Setter
     Integer threadPoolSize;
 
     @Value(value = "${dataservice.protocol}")
@@ -69,6 +70,10 @@ public class DatasourceConfiguration {
     }
 
 
+    /**
+     * add our tuned objectMapper to the feign client also
+     * @return
+     */
     @Bean
     public Decoder feignDecoder() {
         HttpMessageConverter jacksonConverter = new MappingJackson2HttpMessageConverter(myConfiguredObjectMapper);
