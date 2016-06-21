@@ -33,17 +33,17 @@ import java.util.concurrent.ScheduledExecutorService;
 public class DatasourceConfiguration {
     Log logger = LogFactory.getLog(this.getClass());
 
-    @Value("${threadpool.size}")
+    @Value("${threadpool.size:10}")
     @Getter @Setter
     Integer threadPoolSize;
 
-    @Value(value = "${dataservice.protocol}")
+    @Value(value = "${dataservice.protocol:http}")
     private String dataServiceProtocol;
-    @Value(value = "${dataservice.hostname}")
+    @Value(value = "${dataservice.hostname:localhost}")
     private String dataServiceHostname;
-    @Value(value = "${dataservice.port}")
+    @Value(value = "${dataservice.port:9000}")
     private Integer dataServicePort;
-    @Value(value = "${dataservice.path}")
+    @Value(value = "${dataservice.path:/}")
     private String dataServicePath;
 
     @Autowired

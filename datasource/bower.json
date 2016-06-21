@@ -1,0 +1,8 @@
+{
+  "name": "dataSourceApp",
+  "dependencies": {
+    "angular": "~1.3.8",
+    "angular-resource": "~1.3.8",
+    "bootstrap-css-only": "~3.2.0"
+  }
+}

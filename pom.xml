@@ -59,6 +59,7 @@
 		</profile>
 		<profile>
 			<id>all</id>
+			<activation></activation>
 			<modules>
 
 				<!-- software infrastructure-->

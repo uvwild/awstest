@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DataSource Control</title>
+    <link href="css/angular-bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="./bower_components/bootstrap-css-only/css/bootstrap.min.css" />
+    <style type="text/css">
+        [ng\:cloak], [ng-cloak], .ng-cloak {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body ng-app="dataSourceApp" ng-init="appname = 'appname'; date = 'now';">
+<strong>App Name:</strong> {{appname}}<br/>
+<strong>date:</strong> <span ng-bind="date"></span>
+<div ng-controller="DataSourceController as datasource">
+    <a href="{{baseurl}}/restart">Start {{threadCount}} threads</a>
+</div>
+<div>
+    <label>Set the name: <input type="text" ng-model="datasource.name"/></label><br/>
+    <label>Set the date: <input type="text" ng-model="datasource.date"/></label>
+</div>
+
+<script type="text/javascript" src="./js/angular-bootstsrap.js"></script>
+<script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="./bower_components/angular-resource/angular-resource.min.js"></script>
+<script type="text/javascript" src="./bower_components/lodash/dist/lodash.min.js"></script>
+
+<script type="text/javascript" src="./js/app.js"></script>
+<script type="text/javascript" src="./js/services/testservice.js"></script>
+<script type="text/javascript" src="./js/controller/datasource.js"></script>
+</body>
+</html>
