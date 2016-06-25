@@ -1,7 +1,6 @@
 'use strict';
-
-App.factory('TestService', ['$http', '$q', function($http, $q){
-
+var dataSourceMod = angular.module('dataSourceMod');
+dataSourceMod.factory('TestService', function($http, $q){
     return {
 
         startThreads: function() {
@@ -15,8 +14,7 @@ App.factory('TestService', ['$http', '$q', function($http, $q){
                     return $q.reject(errResponse);
                 }
             );
-        },
-
+        }
 
         //fetchAllUsers: function() {
         //    return $http.get('http://localhost:8080/Spring4MVCAngularJSExample/user/')
@@ -72,4 +70,4 @@ App.factory('TestService', ['$http', '$q', function($http, $q){
 
     };
 
-}]);
+});

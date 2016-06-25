@@ -4,10 +4,15 @@
 
 'use strict';
 
-var App = angular.module('dataSourceApp',[]);
+console.log('Hello, npm!');
 
-App.name = "datasource";
+require ('angular')
 
-App.baseurl = "http://localhost:8088";
-App.date = 12345;
-App.threadCount = 10;
+var dataSourceMod = angular.module('dataSourceMod',[]);
+
+dataSourceMod.run(function($rootScope) {
+    $rootScope.name = "datasource";
+    $rootScope.baseurl = "http://localhost:8088";
+    $rootScope.date = 12345;
+    $rootScope.threadCount = 10;
+});

@@ -1,3 +1,5 @@
+/datasource/node_modules
+/datasource/src/main/resources/static/bower_components
 /eb-tomcat-example/
 /out
 

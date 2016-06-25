@@ -1,20 +1,22 @@
 'use strict';
 
+var dataSourceMod = angular.module('dataSourceMod');
+
 /** angular controller layer */
-App.controller('DatasourceController', ['$scope', 'TestService', function($scope, TestService) {
+dataSourceMod.controller('DatasourceController', function($scope, TestService) {
     var self = this;
     self.user={id:null,username:'',address:'',email:''};
     self.users=[];
     self.text = "";
-    self.threadCount = 7;
-    self.threads = "bla bla";
-    self.baseurl = App.baseurl;
+    //$scope.threadCount = 7;
+    //$scope.threads = "bla bla";
+    //$scope.baseurl = App.baseurl;
 
     self.startThreads = function(){
         TestService.startThreads()
             .then(
             function(d) {
-                self.text = d;
+                self.threads = d;
             },
             function(errResponse){
                 console.error('Error while starting Threads');
@@ -89,19 +91,31 @@ App.controller('DatasourceController', ['$scope', 'TestService', function($scope
     //    $scope.myForm.$setPristine(); //reset Form
     //};
     //
-}]);
+});
 
 
-App.controller('test1', function($scope, $rootScope) {
-    var self = this;
-    self.user = {id: null, username: '', address: '', email: ''};
-    self.users = [];
-    $rootScope.text = "";
-    $rootScope.threadCount = 7;
+dataSourceMod.controller('test1', function($scope, $rootScope) {
+
+    $scope.users = [];
+//    $rootScope.text = "";
+//    $rootScope.threadCount = 7;
     $scope.threads = "bla bla";
-    $rootScope.baseurl = App.baseurl;
+//    $rootScope.baseurl = App.baseurl;
     $scope.date = new Date().toDateString();
-    $rootScope.name = 'test1';
+//    $rootScope.name = 'test1';
+
+    $scope.startThreads = function(){
+        TestService.startThreads()
+            .then(
+            function(d) {
+                self.threads = d;
+            },
+            function(errResponse){
+                console.error('Error while starting Threads');
+            }
+        );
+    };
+
 
 });
 

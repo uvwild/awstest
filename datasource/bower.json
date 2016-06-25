@@ -1,8 +1,21 @@
 {
   "name": "dataSourceApp",
+  "version": "0.0.1",
+  "authors": [
+    "UV <uvwild@gmail.com>"
+  ],
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "node_modules",
+    "libs",
+    "test",
+    "tests"
+  ],
   "dependencies": {
-    "angular": "~1.3.8",
-    "angular-resource": "~1.3.8",
+    "angular": "~1.4.12",
+    "angular-resource": "~1.4.12",
     "bootstrap-css-only": "~3.2.0"
-  }
+  },
+  "private": true
 }
