@@ -1,10 +1,13 @@
 'use strict';
+
 var dataSourceMod = angular.module('dataSourceMod');
-dataSourceMod.factory('TestService', function($http, $q){
+
+dataSourceMod.service('TestService', function($http, $q, $rootScope){
     return {
 
         startThreads: function() {
-            return $http.get('{{App.baseurl}}restart')
+            var requestUrl = $rootScope.baseurl + '/startThreads';
+            return $http.get(requestUrl)
                 .then(
                 function(response){
                     return response.data;

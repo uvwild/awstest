@@ -26,9 +26,16 @@ public class TestController extends org.funtime.common.TestController {
     @Autowired
     private ThreadPool threadPool;
 
-    @RequestMapping(value = "/restart", method = RequestMethod.GET)
+    @RequestMapping(value = "/startThreads", method = RequestMethod.GET)
     public ResponseEntity<List<String>> restart() {
-        List<String> names = threadPool.startExecutorStream().map(Object::toString).collect(Collectors.toList());
+        List< String> names = threadPool.startExecutorStream().map(Object::toString).collect(Collectors.toList());
+        return ResponseEntity.ok(names);
+    }
+
+    @RequestMapping(value = "/startThreads/{threadCount}", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> restart(@PathVariable Integer threadCount) {
+
+        List<String> names = threadPool.startExecutorStream(threadCount).map(Object::toString).collect(Collectors.toList());
         return ResponseEntity.ok(names);
     }
 

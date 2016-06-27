@@ -11,25 +11,15 @@
     </style>
 </head>
 
-<body ng-app="dataSourceMod" ng-init="appname = 'dataSource'; date = 'alsdkjsa';">
+<body ng-app="dataSourceMod" ng-init="appname = 'dataSource';">
 
 <strong>App Name:</strong> {{appname}}<br/>
-<strong>date:</strong> <span ng-bind="date"></span>
-
-<div class="panel-body"  ng-controller="test1">
-    <a href="{{baseurl}}restart">Start {{threadCount}} threads</a>
-    <br/>
-    <button ng-click='startThreads()'>ButtonStart {{threadCount}} threads</button>
-</div>
-
-<div class="panel-body" ng-controller="test1">
-    <label>Set the name: <input type="text" ng-model="name"/></label><br/>
-    <label>Set the date: <input type="text" ng-model="date"/></label>
-</div>
 
 <div class="panel-body" ng-controller="DataSourceController">
-    <label>Set the name: <input type="text" ng-model="name"/></label><br/>
+    <h3>DataSourceController</h3>
+    <strong>date:</strong> <span ng-bind="date"></span><br/>
     <label>Set the date: <input type="text" ng-model="date"/></label><br/>
+    <label>ThreadCount: <input type="text" ng-model="threadCount"/></label><br/>
     <button ng-click='startThreads()'>ButtonStart {{threadCount}} threads</button>
 </div>
 

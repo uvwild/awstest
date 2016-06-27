@@ -3,16 +3,16 @@
 var dataSourceMod = angular.module('dataSourceMod');
 
 /** angular controller layer */
-dataSourceMod.controller('DatasourceController', function($scope, TestService) {
+dataSourceMod.controller('DataSourceController', function($scope, TestService) {
     var self = this;
     self.user={id:null,username:'',address:'',email:''};
     self.users=[];
     self.text = "";
     //$scope.threadCount = 7;
-    //$scope.threads = "bla bla";
-    //$scope.baseurl = App.baseurl;
+    $scope.threads = "bla bla";
+//    $scope.baseurl = App.baseurl;
 
-    self.startThreads = function(){
+    $scope.startThreads = function(){
         TestService.startThreads()
             .then(
             function(d) {

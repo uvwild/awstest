@@ -6,13 +6,12 @@
 
 console.log('Hello, npm!');
 
-require ('angular')
-
 var dataSourceMod = angular.module('dataSourceMod',[]);
 
 dataSourceMod.run(function($rootScope) {
     $rootScope.name = "datasource";
-    $rootScope.baseurl = "http://localhost:8088";
-    $rootScope.date = 12345;
+    // talk to home only
+    $rootScope.baseurl = location.protocol + '//' + location.host;
+    $rootScope.date = new Date().toDateString();
     $rootScope.threadCount = 10;
 });

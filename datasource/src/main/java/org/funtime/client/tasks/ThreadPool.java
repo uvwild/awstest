@@ -54,6 +54,18 @@ public class ThreadPool {
         return scheduledFutureStream;
     }
 
+    public Stream<ScheduledFuture<?>> startExecutorStream(Integer threadCount) {
+        Stream<ScheduledFuture<?>> scheduledFutureStream = IntStream.range(0, threadCount).mapToObj(i -> {
+            long delay = random.nextInt(1000) + (1000 * i);
+            long when = System.currentTimeMillis();
+            return executorService.schedule(new ClientTask("send", i, when, this, packetSendingService),
+                                            delay,
+                                            TimeUnit.MILLISECONDS);
+        });
+        return scheduledFutureStream;
+    }
+
+
     /**
      * @param runnable schedules runnable with random delay up to 1 second
      */
