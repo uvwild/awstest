@@ -34,7 +34,6 @@ public class TestController extends org.funtime.common.TestController {
 
     @RequestMapping(value = "/startThreads/{threadCount}", method = RequestMethod.GET)
     public ResponseEntity<List<String>> restart(@PathVariable Integer threadCount) {
-
         List<String> names = threadPool.startExecutorStream(threadCount).map(Object::toString).collect(Collectors.toList());
         return ResponseEntity.ok(names);
     }

@@ -5,8 +5,8 @@ var dataSourceMod = angular.module('dataSourceMod');
 dataSourceMod.service('TestService', function($http, $q, $rootScope){
     return {
 
-        startThreads: function() {
-            var requestUrl = $rootScope.baseurl + '/startThreads';
+        startThreads: function(threadCount) {
+            var requestUrl = $rootScope.baseurl + '/startThreads/' + threadCount;
             return $http.get(requestUrl)
                 .then(
                 function(response){
